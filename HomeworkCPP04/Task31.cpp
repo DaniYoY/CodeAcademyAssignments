@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <string>
+#include <array>
 
 void analyzeText(std::string & text);
 std::string multilineInput ();
@@ -30,10 +31,10 @@ std::string multilineInput ()
 {
     std::string line{""};
     std::string result{""};
-    std::cout<< "Please enter text. Stop by placing &!& on a single line " << std::endl;
+    std::cout<< "Please enter text. Stop by placing eof on a single line " << std::endl;
     while (std::getline(std::cin, line))
     {
-        if(line == "&!&"){
+        if(line == "eof"){
             break;
         }
         result += line + "\n"; 
@@ -48,8 +49,7 @@ void analyzeText(std::string & text){
     long numberOfUpperAlphas {0};
     long numberOfLowerAlphas {0};
     long numberOfVowels {0};
-    long numberOfConsonants {0};
-    
+    long numberOfConsonants {0}; 
     long numberOfWords {0};
     bool isWord {false};
     char firstUnique{' '};
@@ -57,7 +57,11 @@ void analyzeText(std::string & text){
     std::string longestWord{""}; 
     std::string temp{""}; 
     std::string longestWordWithUniqueChars{""};
-
+    for (auto i = 0; i < text.size(); i++)
+    {
+        repeatedCharMap[i] = false;
+    }
+    
     for (int i = 0; i < text.size(); i++)
     {
         // checking the unique char
@@ -87,7 +91,7 @@ void analyzeText(std::string & text){
             }
 
             // Gathering info on chars uniqueness
-            for (long j = i; j < text.size(); j++)
+            for (auto j = i; j < text.size(); j++)
             {   
                 if(repeatedCharMap[i]){
                     break;
@@ -137,7 +141,7 @@ void analyzeText(std::string & text){
         
     }
 
-    for (long i = 0; i < text.size(); i++)
+    for (auto i = 0; i < text.size(); i++)
     {
         if(!repeatedCharMap[i]){
             firstUnique = text[i];
