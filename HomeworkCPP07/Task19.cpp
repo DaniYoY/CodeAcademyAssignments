@@ -1,8 +1,20 @@
-// Задача 14
-// Напишете конзолен морски шах с n x n дъска за двама играча. Програмата трябва да позволява игра на
-// множество игри докато потребителя не пожелае да я затвори.
-// В началото на програмата се въвеждат имената на играчите.
-// В началото на всяка игра, потребителя избира размера на дъската, след което се провежда една игра.
+// Задача 19
+// Напишете програма с меню и функционалност за връщане назад със следните менюта (състояния на приложението и
+// транзиции м/у тях, използвайте команда "back" от потребителя за връщане назад от меню. ):
+// Intro Greetings State - показва се веднъж при стартиране. Моли потребителя за име, поздравява го и запазва името му за
+// следващите менюта, след което води до Main Menu.
+// Main Menu - показва 3 възможни подменюта - Едно за стартиране на морски шах, бесеница и "Богъл":
+// https://en.wikipedia.org/wiki/Boggle
+// https://en.wikipedia.org/wiki/Hangman_(game)
+// От Main Menu можем да изберем една от трите игри, което води в Стартовото меню на съответната игра.
+// Ако дадем back от Main Menu, приложението терминира.
+// Всяко Стартово меню за игра ще работи различно (при морския шах си избираме размери на дъската, например), но общото м/у
+// всички стартови менюта е че водят до стартиране на съответната игра, а back води до Main Menu.
+// След провеждане на игра и изписване на финалния резултат или по време на игра, ако потребителя избере back, се връщаме в
+// Main Menu.
+// За момента ще интегрираме само морския шах, а избора на друга игра ще принтира съощение, че играта се разработва все
+// още и ще има единствена опция за връщане в Main Menu чрез back.
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -372,7 +384,7 @@ Game startMenu(std::vector<Game> & allGames){
 
 // this method is used in homework 07
 void playTheTikTakToe( std::vector<Game> & allGames, Game & currentGame){
-    Player currentPlayer{};
+     Player currentPlayer{};
     if(currentGame.isEnded){
         std::cout<< "This game has ended" <<std::endl;
         return;
@@ -390,23 +402,7 @@ void playTheTikTakToe( std::vector<Game> & allGames, Game & currentGame){
     }
     return; 
 }
-int main(){
-    std::vector<Game> allGames{};
-    Game currentGame{};
-    Player currentPlayer{};
-    currentGame = startMenu(allGames);
-    while (true)
-    {
-        if (isEnd(currentGame))
-        {
-            currentGame.isEnded = true;
-            currentGame = startMenu(allGames);   
-        }
-        currentPlayer = determineNextPlayer(currentGame);
-        if( !playMove(currentGame)){
-            currentGame = startMenu(allGames);
-        };
-    }
+
+void startMainMenu(){
     
-    return 0;
 }

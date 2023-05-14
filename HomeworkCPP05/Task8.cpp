@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 std::vector<int> determineDiversityOfChar(const std::vector<std::string> & s);
 int calculateDiversChars(const std::string & s);
@@ -49,4 +50,10 @@ int calculateDiversChars(const std::string & s){
         charecters[s[i]]++;
     }
     return charecters.size();    
+}
+
+int main(){
+std::vector<std::string> srt {"aaaaaa", "abc", "ftg", "eee", "23"};
+printDiverseStrings(srt);
+
 }
