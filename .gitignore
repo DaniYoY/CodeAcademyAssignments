@@ -34,3 +34,13 @@
 *.exe
 *.out
 *.app
+.vs/CMakeWorkspaceSettings.json
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/tasks.vs.json
+.vs/VSWorkspaceState.json
+.vs/Daniel-Yordanov-S05/FileContentIndex/d550114d-ffc3-4b99-9c01-a98756d9b011.vsidx
+.vs/Daniel-Yordanov-S05/FileContentIndex/read.lock
+.vs/Daniel-Yordanov-S05/config/applicationhost.config
+.vs/Daniel-Yordanov-S05/v17/.wsuo
+.vs/Daniel-Yordanov-S05/v17/Browse.VC.db

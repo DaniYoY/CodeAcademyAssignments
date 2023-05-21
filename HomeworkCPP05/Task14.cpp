@@ -29,18 +29,18 @@ Player::~Player()
 {
 }
 
-class Game
+class TicTakToe
 {
 public:
     bool isEnded;
     std::vector<Player> players;
     std::vector<std::vector<int>> gameMap;
     std::vector<std::vector<char>> gameProgress;
-    Game();
-    ~Game();
+    TicTakToe();
+    ~TicTakToe();
 };
 
-Game::Game ()
+TicTakToe::TicTakToe ()
 {
     isEnded = false;
     players= {};
@@ -48,7 +48,7 @@ Game::Game ()
     gameProgress = {};
 }
 
-Game::~Game()
+TicTakToe::~TicTakToe()
 {
 }
 
@@ -80,8 +80,8 @@ std::vector<std::vector<char>> createGameProgress(const std::vector<std::vector<
     return gameProgress;
 }
 
-Game createNewGame(std::vector<Game> & allGames){
-    Game game;
+TicTakToe createNewGame(std::vector<TicTakToe> & allGames){
+    TicTakToe game;
     Player p;
     for (int i = 1; i <= 2; i++)
     {
@@ -104,7 +104,7 @@ Game createNewGame(std::vector<Game> & allGames){
     return game;
 }
 
-void printProgressTable(const Game & game){
+void printProgressTable(const TicTakToe & game){
     for (int i = 0; i < game.gameMap.size(); i++)
     {
         for (int j = 0; j < game.gameMap.size(); j++)
@@ -120,14 +120,14 @@ void printProgressTable(const Game & game){
     }
     
 };
-Player & determineNextPlayer(Game & game){
+Player & determineNextPlayer(TicTakToe & game){
     if (game.players[0].moves == game.players[1].moves)
     {
         return  game.players[0];
     }
     return game.players[1];
  }
-bool playMove(Game & game){
+bool playMove(TicTakToe & game){
     Player & p = determineNextPlayer(game);
     int pos{0};
     int row{0};
@@ -254,7 +254,7 @@ char checkForWinningDioganalDL2UR(const std::vector<std::vector<char>> & vectors
     
     return ' ';
 }
-char checkForWin(const Game & game){
+char checkForWin(const TicTakToe & game){
     char winningChar {' '};
     // horizontally
     winningChar = checkForWinningRow(game.gameProgress);
@@ -284,7 +284,7 @@ char checkForWin(const Game & game){
     return ' ';
  }
 
- bool isEnd(const Game & game){
+ bool isEnd(const TicTakToe & game){
     char ch{' '};
     std::string winnerName{""};
 
@@ -322,7 +322,7 @@ char checkForWin(const Game & game){
     return false;
  }
  
-Game & accessGame(std::vector<Game> & allGames){
+TicTakToe & accessGame(std::vector<TicTakToe> & allGames){
     int gameNumber{0};
     std::cout << "Please see list of games and choose the game number" << std::endl;
     for(int i = 0; i < allGames.size(); i++){
@@ -333,8 +333,8 @@ Game & accessGame(std::vector<Game> & allGames){
     return allGames[gameNumber];
 }
 
-Game startMenu(std::vector<Game> & allGames){
-    Game g{};
+TicTakToe startMenu(std::vector<TicTakToe> & allGames){
+    TicTakToe g{};
     char nextStep {' '};
     bool isToEndMenu{false};
     while(true){
@@ -371,7 +371,7 @@ Game startMenu(std::vector<Game> & allGames){
 }
 
 // this method is used in homework 07
-void playTheTikTakToe( std::vector<Game> & allGames, Game & currentGame){
+void playTheTikTakToe( std::vector<TicTakToe> & allGames, TicTakToe & currentGame){
     Player currentPlayer{};
     if(currentGame.isEnded){
         std::cout<< "This game has ended" <<std::endl;
@@ -391,8 +391,8 @@ void playTheTikTakToe( std::vector<Game> & allGames, Game & currentGame){
     return; 
 }
 int main(){
-    std::vector<Game> allGames{};
-    Game currentGame{};
+    std::vector<TicTakToe> allGames{};
+    TicTakToe currentGame{};
     Player currentPlayer{};
     currentGame = startMenu(allGames);
     while (true)

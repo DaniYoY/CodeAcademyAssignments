@@ -2,62 +2,56 @@
 // Напишете функция, която приема вектор от цели числа и връща под-вектор, чиято сума на елементите е равна на
 // подаден на функцията параметър.
 
-// NOT WORKING
-
 #include <vector>
 #include <iostream>
-bool equalsTarget(int target, std::vector<int>  numbers);
-std::vector<int>::iterator positionItertor(int i, std::vector<int> vector);
 
-std::vector<int> gatherSubvectorEaquals(int target, std::vector<int> numbers){
-    std::vector<int> result(numbers.size());
-    std::vector<int> endResult;
-    
-    if(equalsTarget(target, numbers)){
-        for (int i = 0; i < numbers.size(); i++)
-        {
-            endResult.push_back(numbers[i]);
-        }
-    }else{
-       result = numbers;
-       for (int i = 0; i < result.size(); i++)
-       {
-        std::vector<int>::iterator it;
-        it = positionItertor(i, result);
-        result.erase(it);
-        endResult = gatherSubvectorEaquals(target, result);
-       }
-       
-       
-    }
-    return endResult;    
-}
-
-bool equalsTarget(int target, std::vector<int>  numbers){
-    int interimSum{0}; 
+bool equalsNumber(const std::vector<int> & numbers, int number){
+    int sum{0};
     for (int i = 0; i < numbers.size(); i++)
     {
-        interimSum += numbers[i];
+        sum +=numbers[i];
     }
-    return interimSum == target;
+    return sum == number;
 }
 
-std::vector<int>::iterator positionItertor(int i, std::vector<int> vector){
-    std::vector<int>::iterator it;
-    it = vector.begin();
-    for (int j = 0; j < i; j++)
+ std::vector<std::vector<int>> generteSubVectors (const std::vector<int> & numbers){
+    std::vector<std::vector<int>> result;
+    for (size_t start = 0; start < numbers.size(); start++)
     {
-        it++;
+        for (size_t end = 0; end < numbers.size(); end++)
+        {
+            std::vector<int> subVector;
+            for (size_t i = start; i <= end; i++)
+            {
+                subVector.push_back(numbers[i]);
+            }
+            result.push_back(subVector);
+            subVector.clear();
+        }
     }
-    return it;
-}
+    return result;    
+ }
 
-int main(){
-    std::vector<int> v;
-   v = gatherSubvectorEaquals(2, {1,1,2,3,4,5});
-   for (int i = 0; i < v.size(); i++)
-   {
-    std::cout << v[i];
-   }
-   
-}
+ void printNumVector (const std::vector<int> & nums){
+    for (size_t i = 0; i < nums.size(); i++)
+    {
+        std::cout<< nums[i]<<", ";
+    }
+    std::cout<<std::endl;
+ }
+
+ int main(){
+    std::vector<int> nums;
+    std::vector<std::vector<int>> subs;
+    int target{0};
+    target = 2;
+    nums = {1,-1,0,1,1,-2};
+    subs = generteSubVectors(nums);
+    for (const std::vector<int> v : subs)
+    {
+        if (equalsNumber(v,target))
+        {
+            printNumVector(v);
+        }
+    }
+ }

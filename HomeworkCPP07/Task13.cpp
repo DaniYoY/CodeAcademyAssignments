@@ -19,7 +19,7 @@
 using vs = std::vector<std::string>;
 using mivs = std::map<int, vs>;
 
-vs getWords(std::string s){
+vs getWords(const std::string & s){
     vs words;
     std::string word{""};
     for (long i = 0; i < s.size(); i++)
@@ -39,7 +39,7 @@ vs getWords(std::string s){
     return words;
 }
 
-bool isAnagram(std::string word1, std::string word2){
+bool isAnagram(const std::string & word1, std::string word2){
     if(word1.size() != word2.size()){
         return 0;
     }

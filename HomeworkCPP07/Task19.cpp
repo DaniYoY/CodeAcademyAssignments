@@ -18,6 +18,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 
 
 class Player
@@ -27,7 +28,6 @@ public:
     int moves;  
     std::string name;
     Player();
-    ~Player();
 };
 
 Player::Player()
@@ -36,34 +36,37 @@ Player::Player()
     moves = 0;
     name ="";
 }
-
-Player::~Player()
-{
+// global check
+bool isYesOrNo (const std::string & answer){
+    if (answer == "y" || answer == "yes"
+    || answer == "Y" || answer == "Yes" || answer == "YES")
+    {
+        return true;
+    } 
+    return false; 
 }
-
-class Game
+struct TicTacToeGame
+{
+class TicTakToe
 {
 public:
     bool isEnded;
     std::vector<Player> players;
     std::vector<std::vector<int>> gameMap;
     std::vector<std::vector<char>> gameProgress;
-    Game();
-    ~Game();
-};
-
-Game::Game ()
-{
+    TicTakToe(){
     isEnded = false;
     players= {};
     gameMap = {};
     gameProgress = {};
 }
+};
 
-Game::~Game()
-{
-}
-
+// creating vector to store more than 1 game
+std::vector<TicTakToe> allGames;
+//  empty char for tracking progress
+char loserChar {' '};
+// methods for boards and game creation
 std::vector<std::vector<int>> createGameTable(){
     int n{0};
     int pos{0};
@@ -74,26 +77,24 @@ std::vector<std::vector<int>> createGameTable(){
     {
         for (int j = 0; j < n; j++)
         {
-            std::cout<< ++pos <<" | ";
+            std::cout<< "| " << ++pos <<" |";
             gameMap[i].push_back(pos); 
         }
         std::cout << std::endl;
     }
     return gameMap;
 }
-
 std::vector<std::vector<char>> createGameProgress(const std::vector<std::vector<int>> & gameMap){
     std::vector<std::vector<char>> gameProgress(gameMap.size());
     for (int i = 0; i < gameMap.size(); i++)
     {
-        std::vector<char> lines (gameMap.size(),' ');
+        std::vector<char> lines (gameMap.size(),loserChar);
         gameProgress[i] =lines;
     }
     return gameProgress;
 }
-
-Game createNewGame(std::vector<Game> & allGames){
-    Game game;
+TicTakToe createNewGame(std::vector<TicTakToe> & allGames){
+    TicTakToe game;
     Player p;
     for (int i = 1; i <= 2; i++)
     {
@@ -107,7 +108,6 @@ Game createNewGame(std::vector<Game> & allGames){
             --i;
             continue;
         }
-        
         game.players.push_back(p);
     }
     game.gameMap = createGameTable();
@@ -115,13 +115,13 @@ Game createNewGame(std::vector<Game> & allGames){
     allGames.push_back(game);
     return game;
 }
-
-void printProgressTable(const Game & game){
+// methods for making moves
+void printProgressTable(const TicTakToe & game){
     for (int i = 0; i < game.gameMap.size(); i++)
     {
         for (int j = 0; j < game.gameMap.size(); j++)
         {
-            if (game.gameProgress[i][j] != ' ')
+            if (game.gameProgress[i][j] != loserChar)
             {
                  std::cout<< game.gameProgress[i][j] <<" | ";
             }else{
@@ -130,279 +130,259 @@ void printProgressTable(const Game & game){
         }
         std::cout<< std::endl;
     }
-    
 };
-Player & determineNextPlayer(Game & game){
+Player & determineNextPlayer(TicTakToe & game){
     if (game.players[0].moves == game.players[1].moves)
     {
         return  game.players[0];
     }
     return game.players[1];
  }
-bool playMove(Game & game){
+bool takeWinningPosition(TicTakToe & game){
+    int pos{0}, row{0}, col{0};
     Player & p = determineNextPlayer(game);
-    int pos{0};
-    int row{0};
-    int col{0};
- while(true){
-    std::cout<< "By choosing -1 will stop the game" << std::endl;
-    std::cout<< p.name <<" is on the move, choosing position : " << std::endl;
-    std::cin >> pos;
-    if(pos == -1){
-        return false;
+    //  making move
+     while(true){
+        std::cout<< "By choosing -1 will stop the game" << std::endl;
+        std::cout<< p.name <<" is on the move, choosing position : " << std::endl;
+        std::cin >> pos;
+        if(pos == -1){
+            return true;
+        }
+        // positions start from 1, but positions in vectors start from 0
+        row = --pos / game.gameMap.size();
+        col = pos - game.gameMap.size()*row; 
+        if(game.gameProgress[row][col] == loserChar){
+            game.gameProgress[row][col] = p.playSign;
+            break;
+        }else{
+            std::cout<<"This position is taken. Choose another" << std::endl;
+        }
     }
-    // positions start from 1, but positions in vectors start from 0
-    row = --pos / game.gameMap.size();
-    col = pos - game.gameMap.size()*row; 
-    if(game.gameProgress[row][col] == ' '){
-        game.gameProgress[row][col] = p.playSign;
-        break;
-    }else{
-        std::cout<<"This position is taken. Choose another" << std::endl;
-    }
-}
     p.moves++;
-    // if(p.name == game.players[0].name){
-    //     game.players[0].moves++;
-    // }else{
-    //     game.players[1].moves++;
-    // }
     printProgressTable(game);
-    return true;
-}
-
-char checkForWinningRow(const std::vector<std::vector<char>> & vectorsVec){
-    for (std::vector<char> charVec : vectorsVec)
+    // checking for win
+    if (checkForWin(game,row, col))
     {
-        bool isCharSame {true};
-        char winner {' '};
-        for (int i = 0; i < charVec.size() -1; i++)
-        {
-            if (charVec[i]== ' ')
-            {
-                break;
-            }
-            winner = charVec[i];
-            if (charVec[i] != charVec[i+1])
-            {
-                isCharSame = false;
-                break;
-            }
-        }
-        if(isCharSame){
-            return winner;
-        }
-    }
-    return ' ';
-}
-char checkForWinningCol(const std::vector<std::vector<char>> & vectorsVec){
-    char winner{' '};
-    bool isWinning {true};
-    for (int i = 0; i < vectorsVec.size(); i++)
-    {
-        for (int j = 0; j < vectorsVec.size()-1; j++)
-        {
-
-            if(vectorsVec[j][i] != vectorsVec[j+1][i]){
-                isWinning = false;
-                break;
-            }else{
-                winner = vectorsVec[j][i];
-                isWinning = true;
-            }
-        }
-    }
-    if (isWinning)
-    {
-        return winner;
-    }
-    
-    
-    return ' ';
-}
-char checkForWinningDioganalUL2DR(const std::vector<std::vector<char>> & vectorsVec){
-    
-        bool isCharSame {true};
-        char winner {' '};
-        for (int i = 0; i < vectorsVec.size()-1; i++)
-        {
-            if (vectorsVec[i][i]== ' ')
-            {
-                break;
-            }
-            winner = vectorsVec[i][i];
-            if (vectorsVec[i][i] != vectorsVec[i+1][i+1])
-            {
-                isCharSame = false;
-                break;
-            }
-        }
-        if(isCharSame){
-            return winner;
-        }
-    
-    return ' ';
-}
-char checkForWinningDioganalDL2UR(const std::vector<std::vector<char>> & vectorsVec){
-    
-        bool isCharSame {true};
-        char winner {' '};
-        for (int i = 0, j = vectorsVec.size() -1; i < vectorsVec.size()-1; i++, j--)
-        {
-            if (vectorsVec[j][i]== ' ')
-            {
-                break;
-            }
-            winner = vectorsVec[i][i];
-            if (vectorsVec[j][i] != vectorsVec[j-1][i+1])
-            {
-                isCharSame = false;
-                break;
-            }
-        }
-        if(isCharSame){
-            return winner;
-        }
-    
-    return ' ';
-}
-char checkForWin(const Game & game){
-    char winningChar {' '};
-    // horizontally
-    winningChar = checkForWinningRow(game.gameProgress);
-    if (winningChar != ' ')
-    {
-        return winningChar;
-    }
-    
-    // vertically
-    winningChar = checkForWinningCol(game.gameProgress);
-    if (winningChar != ' ')
-    {
-        return winningChar;
-    }
-    // dioganally i=i
-    winningChar = checkForWinningDioganalUL2DR(game.gameProgress);
-    if (winningChar != ' ')
-    {
-        return winningChar;
-    }
-    // dioganally 0=i
-    winningChar = checkForWinningDioganalDL2UR(game.gameProgress);
-    if (winningChar != ' ')
-    {
-        return winningChar;
-    }
-    return ' ';
- }
-
- bool isEnd(const Game & game){
-    char ch{' '};
-    std::string winnerName{""};
-
-    bool isFilled{true};
-    for (int i = 0; i < game.gameProgress.size(); i++)
-    {
-        for (int j = 0; j < game.gameProgress.size(); j++)
-        {
-            if (game.gameProgress[i][j] == ' ')
-            {
-                isFilled = false;
-                break;
-            }
-        }
-    }
-    
-
-    ch = checkForWin(game);
-    if (ch != ' ' )
-    {
-        for (int i = 0; i < game.players.size(); i++)
-        {
-            if (ch == game.players[i].playSign)
-            {
-                std::cout<< "Winner is "<< game.players[i].name<<std::endl;
-            }   
-        }
+        std::cout<< "Winner is "<< p.name << " with " << p.moves <<" moves"
+        <<std::endl;
+        game.isEnded = true;
         return true;
     }
-  
+    if (isStaleEnd(game))
+    {
+        game.isEnded = true;
+        return true;
+    }
+    return false;
+}
+ // methods for checking game state (won or continuing)  
+bool checkForWinningRow(const std::vector<std::vector<char>> & vectorsVec, int row, int col){
+        for (size_t i = 0; i < vectorsVec.size(); i++)
+        {
+            if (vectorsVec[row][i]== loserChar || vectorsVec[row][i] != vectorsVec[row][col])
+            {
+                return false;
+            }
+        }
+    return true;
+}
+bool checkForWinningCol(const std::vector<std::vector<char>> & vectorsVec, int row, int col){
+    for (size_t i = 0; i < vectorsVec.size(); i++)
+    {
+        if (vectorsVec[i][col] == loserChar || vectorsVec[i][col] != vectorsVec[row][col])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+bool checkForWinningDioganalUL2DR(const std::vector<std::vector<char>> & vectorsVec, int row, int col){
+    if (row != col)
+    {
+        return false;
+    }
+    for (size_t i = 0; i < vectorsVec.size(); i++)
+    {
+        if (vectorsVec[row][col] != vectorsVec[i][i] )
+        {
+            return false;
+        }
+    }
+    return true;
+}
+bool checkForWinningDioganalDL2UR(const std::vector<std::vector<char>> & vectorsVec, int row, int col){
+    for (size_t i = 0; i < vectorsVec.size(); i++)
+    {
+        if (vectorsVec[row][col] != vectorsVec[i][vectorsVec.size()-1 -i]
+        || vectorsVec[i][vectorsVec.size()-1 -i] == loserChar)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+bool checkForWin(const TicTakToe & game, int row, int col){
+    const std::vector<std::vector<char>> & mapProgress = game.gameProgress;
+    if(checkForWinningCol(mapProgress,row, col)
+    || checkForWinningRow(mapProgress,row, col)
+    || checkForWinningDioganalDL2UR(mapProgress, row, col)
+    || checkForWinningDioganalUL2DR(mapProgress,row,col)){
+        return true;
+    }
+    return false;
+ }
+ bool isStaleEnd(const TicTakToe & game){
+    bool isFilled{true};
+    isFilled = (game.players[0].moves + game.players[1].moves)
+     ==( game.gameProgress.size()*game.gameProgress.size()); 
+    
     if (isFilled){
         std::cout<< "There is no winner "<< std::endl;
         return true;
     }
     return false;
  }
- 
-Game & accessGame(std::vector<Game> & allGames){
+// game Menu management 
+TicTakToe & accessGame(std::vector<TicTakToe> & allGames){
     int gameNumber{0};
+    TicTakToe game;
+    if(allGames.empty()){
+        game = createNewGame(allGames);
+        return allGames[0];
+    }
     std::cout << "Please see list of games and choose the game number" << std::endl;
     for(int i = 0; i < allGames.size(); i++){
-        std::cout<< "Game # " << i << " between "<< allGames[i].players[0].name << " and " << allGames[i].players[1].name << std::endl;
+        if(!allGames[i].isEnded){
+            std::cout<< "Game # " << i << " between "<< allGames[i].players[0].name << " and " << allGames[i].players[1].name << std::endl;
+        }
     }
+    std::cout<< "Game # " << allGames.size() << " is for NEW GAME " << std::endl;
     std::cin >> gameNumber;
+    if (gameNumber == allGames.size())
+    {
+        game = createNewGame(allGames);
+        return allGames.back();
+    }
+    
     printProgressTable(allGames[gameNumber]);
     return allGames[gameNumber];
 }
-
-Game startMenu(std::vector<Game> & allGames){
-    Game g{};
-    char nextStep {' '};
-    bool isToEndMenu{false};
-    while(true){
-        if(allGames.empty()){
-            g =  createNewGame(allGames);
-            break;
-        }else{
-            std::cout<< "Do you want to access another game (press A) or create a new game(press N)" << std::endl;
-            std::cin >>nextStep;
-        }
-
-        switch (std::toupper(nextStep))
-        {
-            case 'N':
-                g=  createNewGame(allGames);
-                isToEndMenu = true;
-                break;
-            case 'A':
-                g =  accessGame(allGames);
-                isToEndMenu = true;
-                break;
-            default:
-                std::cout<< "Wrong Char! Do you want to access another game (press A) or create a new game(press N)?" << std::endl;
-                break;
-        }
-
-        if (isToEndMenu)
-        {
-            break;
-        }
-        
-    }
-    return g;
-}
-
-// this method is used in homework 07
-void playTheTikTakToe( std::vector<Game> & allGames, Game & currentGame){
+void playTheTikTakToe(){
      Player currentPlayer{};
-    if(currentGame.isEnded){
-        std::cout<< "This game has ended" <<std::endl;
-        return;
-    }
-     while (true)
-    {
-        if (isEnd(currentGame))
-        {
-            currentGame.isEnded = true;
-            return;   
-        }
-        if( !playMove(currentGame)){
-            return;
-        }
+     TicTakToe currentGame{};
+    currentGame = accessGame(allGames);
+    while (!takeWinningPosition(currentGame))
+    { 
+        continue;
     }
     return; 
 }
-
-void startMainMenu(){
+};
+struct HangmanGame
+{
+    class Hangman
+    {
+    public:
+        int mistakeCounter;
+        std::string word;
+        std::map<char,bool> usedWords;
+        Hangman(){
+            mistakeCounter =9;
+            word = "";
+            usedWords;
+        };
+    };
     
+    Hangman setupGame(Player & p){
+        int mistakes{0};
+        std::string word{""};
+        Hangman game;
+        std::cout<< "Let's play a game, " << p.name << std::endl;
+        std::cout<< "Enter a word, " << p.name << std::endl;
+        std::cin>> word;
+        while(true){
+            std::cout<< "Enter number of mistakes that can be made (up to 9)" << std::endl;
+            std::cin >> mistakes; 
+            if (mistakes > 10 || mistakes < 0 || std::cin.fail())
+            {
+                std:: cout << "This is an unacceptable input. Mistakes can be from 0 to 9." << std:: endl;
+                continue;
+            }
+            break;
+        }
+        game.word = word;
+        game.mistakeCounter = mistakes;
+        return game;
+    }
+    void makeMove(Hangman & game){
+        // take char, check char, if --mistakes are 0 end, or win
+    }
+
+    
+    
+
+
+    // "  ___________"
+    // "  |         |"
+    // "  |         O"
+    // "  |        /|\\"
+    // "  |        /\\"
+    // "  |"
+    // "__|__"
+
+};
+
+void greetPlayer(Player & p){
+    std::cout<<"Hi Player, what is your name?" << std::endl;
+    std::cin >> p.name;
+    std::cout << "Nice to meet you, " << p.name << std::endl;
+}
+void printMainMenu(){
+    std::cout<<
+    "_____Main Menu_____\n"
+    "\n"
+    "1. Tic Tac Toe\n"
+    "2. Hangman \n"
+    "3. Boggle \n"
+    "\n"
+    "___________________"
+    "4.      Back       "
+    "___________________";
+}
+void startMainMenu(Player & p){
+    char gameChoice{' '};
+    std::cout<<"Wanna play? Select a number, sweet " << p.name <<std::endl;
+    TicTacToeGame ttt;
+    while (true)
+    {
+        printMainMenu();
+        std::cin >> gameChoice;
+        switch (gameChoice)
+        {
+        case '1':
+            ttt.playTheTikTakToe();
+            continue;
+        case '2':
+            continue;
+        case '3':
+            continue;  
+        case '4':
+            greetPlayer(p);  
+    default:
+        std::cout<<"This is not a suggested number";
+        continue;
+    }
+    }
+}
+
+int main(){
+    Player p;
+    greetPlayer(p);
+    while (true)
+    {
+        startMainMenu(p);
+    }
+    
+    return 0;
 }

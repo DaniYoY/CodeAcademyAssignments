@@ -19,7 +19,6 @@ public:
     double price;
     std::string name;
     Product();
-    ~Product();
 };
 
 Product::Product()
@@ -29,18 +28,12 @@ Product::Product()
     name = "";
 }
 
-
-Product::~Product()
-{
-}
-
 class Inventory
 {
 public:
     std::string shopName;
     std::vector<Product> products;
     Inventory();
-    ~Inventory();
 };
 
 Inventory::Inventory()
@@ -48,11 +41,6 @@ Inventory::Inventory()
     shopName ="";
     products = {};
 }
-
-Inventory::~Inventory()
-{
-}
-
 
 Product makeProduct();
 
