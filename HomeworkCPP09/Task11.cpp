@@ -5,7 +5,7 @@
 
 #include<cstring>
 
-const char*  strrchr (const char *str, int ch)
+const char*  cstrrchr (const char *str, int ch)
 {  
     for (const char *it = str + std::strlen(str)-1; *it != *str; it--)
     {

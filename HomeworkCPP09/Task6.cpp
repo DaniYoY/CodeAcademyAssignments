@@ -16,8 +16,8 @@ void stir(int * arrBegin,int * arrEnd,size_t const pos){
 int main(int argc, char const *argv[])
 {
     
-    std::array<int, 6> arr={1,2,3,4,5,6};
-    stir(arr.begin(),arr.end(),1);
+    std::array<int, 10> arr={1,2,3,4,5,6,7,8,9,10};
+    stir(arr.begin(),arr.end(),3);
     for (auto num : arr)
     {
         std::cout<< num<<' ';

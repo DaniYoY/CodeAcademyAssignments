@@ -43,8 +43,9 @@ std::vector<std::vector<char>> createFilledArrOnInput()
         switch (getUpdatedDigit(direction, numberOfDirections))
         {
             // left to right
+            
         case 0:
-            for (size_t l2r = colBeg; l2r <= colend; l2r++, i++)
+            for (size_t l2r = (colBeg == 0 ? 1 : colBeg)-1; l2r <= colend; l2r++, i++)
             {
                 if (rowBeg % 2 == 0)
                 {
@@ -66,32 +67,28 @@ std::vector<std::vector<char>> createFilledArrOnInput()
             break;
             // right to left
         case 2:
-            for (size_t r2l = colend; r2l != colBeg; r2l--, i++)
+            for (size_t r2l = colend; r2l >= colBeg; r2l--, i++)
             {
                 if (rowEnd % 2 == 0)
                 {
                     arr[rowEnd][r2l] = '*';
+                    if (r2l ==0)
+                    {
+                        break;
+                    }
                 }
-            }
-            if (rowEnd % 2 == 0)
-            {
-                arr[rowEnd][colBeg] = '*';
             }
             rowEnd--;
             i++;
             break;
             // down to up
         case 3:
-            for (size_t d2u = rowEnd; d2u != rowBeg; d2u--, i++)
+            for (size_t d2u = rowEnd; d2u > rowBeg; d2u--, i++)
             {
                 if (colBeg % 2 == 0)
                 {
                     arr[d2u][colBeg] = '*';
                 }
-            }
-            if (colBeg % 2 == 0)
-            {
-                arr[rowBeg][colBeg] = '*';
             }
             colBeg++;
             i++;
