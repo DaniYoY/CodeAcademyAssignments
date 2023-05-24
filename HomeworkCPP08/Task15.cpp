@@ -3,10 +3,6 @@
 
 #include<string>
 #include<iostream>
-#include<chrono>
-#include<cmath>
-#include<random>
-#include<vector>
 
 struct HangmanGame{
     std::string description{""};
