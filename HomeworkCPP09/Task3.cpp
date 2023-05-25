@@ -23,7 +23,7 @@ class Person
     };
 };
 
-bool isEqual(float n1, float n2,unsigned int precision){
+bool compare(float n1, float n2,unsigned int precision){
      float epsilon {0.1f};
     for (int i = 0; i < precision; i++)
     {
@@ -36,7 +36,7 @@ bool areAlignedByHeight(Person group1[], Person * group2, size_t sizeOfArr){
     {
         float p1h = (group1+i) ->height;
         float p2h =  (group2+i)->height;
-        if (!isEqual(p1h,p2h, km2cm)){
+        if (!compare(p1h,p2h, km2cm)){
             return false;
         }
     }

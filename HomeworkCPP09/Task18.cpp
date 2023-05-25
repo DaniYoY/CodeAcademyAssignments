@@ -18,8 +18,7 @@ int getUpdatedDigit(int &digit, const int &base)
     return digit;
 }
 
-std::vector<std::vector<char>> createFilledArrOnInput()
-{
+ int setNumberFromConsole(){
     int n{0};
     std::cout << "Please enter n to generate n x n square" << std::endl;
     std::cin >> n;
@@ -28,14 +27,22 @@ std::vector<std::vector<char>> createFilledArrOnInput()
         std::cout << "n can'y be even nor less than 3 and not it will be 3" << std::endl;
         n = 3;
     }
+    return n;
+}
+
+std::vector<std::vector<char>> createFilledArrOnInput()
+{
+    int n{0};
+    n= setNumberFromConsole();
 
     std::vector<char> temp(n, ' ');
     std::vector<std::vector<char>> arr(n, temp);
     size_t rowBeg{0}, rowEnd{0}, colBeg{0}, colend{0};
     rowEnd = static_cast<size_t>(n - 1);
     colend = static_cast<size_t>(n - 1);
+    // starts at max value - 3, because called function will set it to 0 
     int direction{3};
-    int numberOfDigits{10};
+    // left, right, up, down
     int numberOfDirections{4};
 
     for (int i = 0; i < (n * n);)
@@ -45,6 +52,7 @@ std::vector<std::vector<char>> createFilledArrOnInput()
             // left to right
             
         case 0:
+         //after the first 2 cycles, colBeg (index for begin of columns) is 2, but we need to link it to prev cycle, hence decrementing 
             for (size_t l2r = (colBeg == 0 ? 1 : colBeg)-1; l2r <= colend; l2r++, i++)
             {
                 if (rowBeg % 2 == 0)
@@ -72,6 +80,7 @@ std::vector<std::vector<char>> createFilledArrOnInput()
                 if (rowEnd % 2 == 0)
                 {
                     arr[rowEnd][r2l] = '*';
+                    //  check due to overflow issue and requirement to break at 0, this will happen on 1st cycle
                     if (r2l ==0)
                     {
                         break;
