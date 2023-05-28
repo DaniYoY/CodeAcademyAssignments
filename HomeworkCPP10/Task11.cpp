@@ -9,22 +9,24 @@
 #include<string>
 #include<vector>
 //  with issue by returning the bool pointer function
-typedef bool (*check)(unsigned char& n);
+// typedef bool (*check)(unsigned char& n);
+using  check = bool (*)(const unsigned char&);
 
-
-bool areAlterningBits(unsigned char& n){
-    int cur = n&1;
-    n = n >> 1;
-    while(n > 0){
+bool areAlterningBits(const unsigned char& n1){
+    unsigned char n = n1;
+    do{
+        int cur = n&1;
+        n = n >> 1;
         if(cur == (n&1)){
             return false;
         }
-        cur = n&1;
-        n = n >> 1;
     }
+    while(n);
+    
     return true;
 }
-bool areEqualsZeroesAndOnes(unsigned char& n){
+bool areEqualsZeroesAndOnes(const unsigned char& n1){
+    unsigned char n = n1;
     int ones{0}, zeroes{0};
     while (n >0)
     {
@@ -39,12 +41,12 @@ bool areEqualsZeroesAndOnes(unsigned char& n){
     return ones == zeroes;
 }
 
-auto count (std::vector<unsigned char> & vec, check) -> int{
+auto count (const std::vector<unsigned char> & vec, check f) -> int{
     int result{0};
-    for (unsigned char & i : vec)
+    for (const unsigned char i : vec)
     {
-        bool ch = check(i); 
-        if (ch)
+        // bool ch = check(i); 
+        if (f(i))
         {
             result++;
         }
