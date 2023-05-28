@@ -11,7 +11,7 @@
 class Player
 {
 public:
-    char playSign;  
+    char m_playSign;  
     int moves;  
     std::string name;
     Player();
@@ -20,7 +20,7 @@ public:
 
 Player::Player()
 {
-    playSign = ' ';
+    m_playSign = ' ';
     moves = 0;
     name ="";
 }
@@ -86,10 +86,10 @@ TicTakToe createNewGame(std::vector<TicTakToe> & allGames){
     for (int i = 1; i <= 2; i++)
     {
         std::cout << "please enter player  " << i <<" details (name and playing charecter)" << std::endl;
-        std::cin >> p.name >> p.playSign;
-        std::cout << p.name << " will play with char "<< p.playSign<< std::endl;
+        std::cin >> p.name >> p.m_playSign;
+        std::cout << p.name << " will play with char "<< p.m_playSign<< std::endl;
         
-        if (!game.players.empty() && (p.playSign == game.players[0].playSign || p.name == game.players[0].name))
+        if (!game.players.empty() && (p.m_playSign == game.players[0].m_playSign || p.name == game.players[0].name))
         {
             std::cout<< "player cannot have same sign nor name as the first! Please choose another." << std::endl;
             --i;
@@ -143,7 +143,7 @@ bool playMove(TicTakToe & game){
     row = --pos / game.gameMap.size();
     col = pos - game.gameMap.size()*row; 
     if(game.gameProgress[row][col] == ' '){
-        game.gameProgress[row][col] = p.playSign;
+        game.gameProgress[row][col] = p.m_playSign;
         break;
     }else{
         std::cout<<"This position is taken. Choose another" << std::endl;
@@ -307,7 +307,7 @@ char checkForWin(const TicTakToe & game){
     {
         for (int i = 0; i < game.players.size(); i++)
         {
-            if (ch == game.players[i].playSign)
+            if (ch == game.players[i].m_playSign)
             {
                 std::cout<< "Winner is "<< game.players[i].name<<std::endl;
             }   
