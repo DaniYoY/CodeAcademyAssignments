@@ -68,6 +68,7 @@ TicTacToe::TicTacToe()
             std::vector<char> lines (n, loserChar);
             gameProgress[i] =lines;
         }
+        this->m_gameProgress = gameProgress;
     }
     void TicTacToe::updateGameProgress(int row, int col, char c){
         this->m_gameProgress[row][col] = c;

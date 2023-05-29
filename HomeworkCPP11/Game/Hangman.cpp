@@ -65,14 +65,14 @@ Hangman::Hangman() {
     }
 
     void Hangman::setHangmanan(){
-        std::cout<< "Please enter a word, followed by brief desctiption on a new line \n";
+        std::cout<< "Please enter a word \n";
         std::string word{""};
         std::string description{""};
         std::string info{""};
        
         std::cin >> word;
         this->setWord(word);
-
+        std::cout<< "Provide a brief desctiption of the word \n"<<std::endl;
         std::getline(std::cin, description);
         this->setDescription(description);
 
@@ -88,15 +88,23 @@ Hangman::Hangman() {
     void Hangman::checkTrial(const std::string & trial){
         for(auto & a : trial){
             bool isFound{false};
+            bool isRepeated{false};
+            
+            // check if trial is  repatition
             for (auto letter : this->getAttempts())
             {
                 if (letter == a)
                 {
                     std::cout << "You tried this and were wrong\n\n";
+                    isRepeated =true;
                     break;
                 } 
             }
-    
+            if (isRepeated)
+            {
+                continue;
+            }
+            //  check if trial is good -found
             for (size_t i = 0; i < getWord().size(); i++)
             {
                 if (getWord()[i] == a)
