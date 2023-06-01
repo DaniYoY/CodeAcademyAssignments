@@ -1,10 +1,11 @@
-// #pragma once
+#ifndef TICTACTOE_H
+#define TICTACTOE_H
 
-#include "Player.h"
 #include <iostream>
 #include <vector>
 #include <string>
 
+class Player;
 class TicTacToe
 {
 private:
@@ -56,3 +57,5 @@ private:
     bool isStaleEnd();
 
 };
+
+#endif

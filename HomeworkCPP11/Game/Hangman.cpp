@@ -65,12 +65,12 @@ Hangman::Hangman() {
     }
 
     void Hangman::setHangmanan(){
-        std::cout<< "Please enter a word \n";
         std::string word{""};
         std::string description{""};
         std::string info{""};
        
-        std::cin >> word;
+        std::cout<< "Please enter a word \n";
+        std::getline(std::cin, word);
         this->setWord(word);
         std::cout<< "Provide a brief desctiption of the word \n"<<std::endl;
         std::getline(std::cin, description);

@@ -1,4 +1,5 @@
 #include "TicTacToe.h"
+#include "Player.h"
 
 TicTacToe::TicTacToe()
 {

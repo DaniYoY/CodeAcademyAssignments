@@ -13,6 +13,18 @@ void Menu::greetPlayer(){
     m_StartFromBegin = false;
 }
 
+void getInputForAccessingGame(int & gameNumber){
+    std::string input;
+    std::getline(std::cin, input);
+    try
+    {
+        gameNumber = std::stoi(input);
+    }
+    catch(const std::exception& e)
+    {
+        gameNumber = -1;
+    }
+}
 
 void Menu::accessTTTgame(std::vector<TicTacToe> & allGames){
     int gameNumber{0};
@@ -23,21 +35,23 @@ void Menu::accessTTTgame(std::vector<TicTacToe> & allGames){
             allGames.push_back(game);
         }
     }
-    std::cout << "Please see list of games and choose the game number" << std::endl;
+    std::cout << "Please see list of games and choose the game number, pressing anything else will lead you back" << std::endl;
     for(int i = 0; i < allGames.size(); i++){
         if(!allGames[i].hasEnded()){
             std::cout<< "Game # " << i << " between "<< allGames[i].getPlayers()[0].getName() << " and " << allGames[i].getPlayers()[1].getName() << std::endl;
         }
     }
     std::cout<< "Game # " << allGames.size() << " is for NEW GAME " << std::endl;
-    std::cin >> gameNumber;
+    
+    getInputForAccessingGame(gameNumber);
+    
     if (gameNumber == allGames.size())
     {
         game.playNew();
         if(!game.hasEnded()){
             allGames.push_back(game);
         }
-    }else{
+    }else if( gameNumber < allGames.size() && gameNumber >=0 ){
         game = allGames[gameNumber];
         game.play();
     }
@@ -45,6 +59,7 @@ void Menu::accessTTTgame(std::vector<TicTacToe> & allGames){
 
 void Menu::accessHMgame(std::vector<Hangman> & allGames){
   int gameNumber{0};
+  std::string line{""};
     Hangman game;
     if(allGames.empty()){
         game.playNew();
@@ -59,14 +74,16 @@ void Menu::accessHMgame(std::vector<Hangman> & allGames){
         }
     }
     std::cout<< "Game # " << allGames.size() << " is for NEW GAME " << std::endl;
-    std::cin >> gameNumber;
+
+   getInputForAccessingGame(gameNumber);
+
     if (gameNumber == allGames.size())
     {
         game.playNew();
         if(!game.hasEnded()){
             allGames.push_back(game);
         }
-    }else{
+    }else if( gameNumber < allGames.size() && gameNumber >=0 ){
         game = allGames[gameNumber];
         game.play();
     }

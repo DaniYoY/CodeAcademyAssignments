@@ -1,6 +1,5 @@
-// #pragma once
-#ifndef MYFILE_H
-#define MYFILE_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <iostream>
 #include <vector>

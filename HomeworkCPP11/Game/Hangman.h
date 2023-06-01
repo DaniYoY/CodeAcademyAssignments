@@ -1,5 +1,5 @@
-// #pragma once
-
+#ifndef Hangman_h
+#define Hangman_h
 #include<string>
 #include<iostream>
 
@@ -45,3 +45,5 @@ public:
     void playNew();
     bool checkWin();
 };
+
+#endif
