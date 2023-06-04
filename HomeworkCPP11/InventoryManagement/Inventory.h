@@ -1,10 +1,11 @@
-// #pragma once
+#ifndef INVENTORY_H
+#define INVENTORY_H
 
 #include <string>
 #include<vector>
 #include<iostream>
 #include<fstream>
-#include "Product.h"
+class Product;
 
 class Inventory
 {
@@ -19,3 +20,4 @@ public:
     inline void setName(const std::string & name);
     inline void addProducts(const Product & p);
 };
+#endif

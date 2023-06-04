@@ -1,4 +1,5 @@
-// #pragma once
+#ifndef PRODUCT_H
+#define PRODUCT_H
 
 #include <string>
 #include<vector>
@@ -23,3 +24,5 @@ public:
     inline void setPrice(double val);
     inline void setName(const std::string & val);
 };
+
+#endif

@@ -1,4 +1,5 @@
 #include "Inventory.h"
+#include "Product.h"
 
 Inventory::Inventory() : m_shopName("New Shop")
     {
