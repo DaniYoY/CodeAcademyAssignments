@@ -1,29 +1,36 @@
-.PHONY = build src bin clean
+#.PHONY: build src bin clean
 CXX = g++
 CXXFLAGS = -std=c++11 -MMD -Wall -Wextra
-TARGET = consoleGames.exe
-SRCS = $(wildcard *.cpp)
-OBJS = $(SRCS:.cpp=.o)
-DEPS = $(SRCS:.cpp=.d)
-BLDF = build
 SRCF = src
+BLDF = build
 BINF = bin
+SRCS = $(wildcard $(SRCF)\*.cpp)
+OBJS = $(patsubst $(SRCF)\%.cpp, $(BINF)\%.o, $(SCRS))
+# OBJS = $( SRCS: $(SRCF)\%.cpp = $(BINF)\%.o)
+TARGET = consoleGames.exe
+DEPS = $(OBJS:.o=.d)
 
-$(BLDF)\$(TARGET): $(BINF)\$(OBJS)
+all: build src bin $(BLDF)\$(TARGET) 
+
+$(BLDF)\$(TARGET): $(OBJS) | $(BLDF)
 	$(CXX) $(CXXFLAGS) $^ -o $@ 
 
-$(BINF)\%.o: $(SRCF)\%.cpp
+$(BINF)\%.o: $(SRCF)\%.cpp | $(BINF)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-	-include $(DEPS)
+	
+-include $(DEPS)
 
 build:
-	mkdir -p $@
+	mkdir $(BLDF)
 
 src:
-	mkdir -p $@
+	mkdir $(SRCF)
 
 bin:
-	mkdir -p $(BINF)
+	mkdir $(BINF)
+
+.PHONY: all clean
+
 
 clean:
-	del -f &(BINF)\%.o
+	del -f $(BINF)\%.o
