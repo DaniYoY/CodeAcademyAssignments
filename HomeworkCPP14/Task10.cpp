@@ -42,6 +42,7 @@ std::vector<std::string> produceListOfSubWords(const std::string & source){
             results.push_back(dicWord);
         }        
     }
+    dictionary.close();
     return results;
 }
 

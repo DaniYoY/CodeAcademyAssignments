@@ -15,9 +15,11 @@ bool isSpelled(const std::string & word){
     {
         if (dicWord == word)
         {
+            dictionary.close();
             return true;
         }        
     }
+    dictionary.close();
     return false;
 }
 
