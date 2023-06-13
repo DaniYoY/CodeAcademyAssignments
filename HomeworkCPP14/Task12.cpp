@@ -234,16 +234,17 @@ void playSteppingStones(){
     std::string interimWord{""};
     int n {0};  
     bool exitNow{false};  
-    while (true)
+    while (!exitNow)
     {
         std::cout << wordPath.first << " is the beginning. Now choose an action\n" 
-        "1 for adding a char"
-        "2 for removing a char"
-        "3 for changing a char"
-        "4 for swapping 2 chars"
-        "any other number for exiting"
+        "1 for adding a char \n"
+        "2 for removing a char \n"
+        "3 for changing a char\n"
+        "4 for swapping 2 chars\n"
+        "any other number for exiting\n"
+        "reach " << wordPath.second 
         << std::endl;
-
+        std::cin >> n;
         switch (n)
         {
         case 1:
@@ -266,12 +267,13 @@ void playSteppingStones(){
             exitNow = true;
             break;
         }  
-
-        if (exitNow)
-        {
-            break;
-        }  
     }
     
 
+}
+
+int main(int argc, char const *argv[])
+{
+    playSteppingStones();
+    return 0;
 }
