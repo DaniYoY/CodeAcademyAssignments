@@ -21,7 +21,8 @@ bool containsZeroInBinary(int number){
 }
 void removeIfBinaryHasZero(std::list<int> & numbers){
     auto lamdaPredicate = [](int value){return containsZeroInBinary(value);};
-    std::remove_if(numbers.begin(), numbers.end(), lamdaPredicate);
+    auto lastIter = std::remove_if(numbers.begin(), numbers.end(), lamdaPredicate);
+    numbers.erase(lastIter, numbers.end());
 }
 
 int main(int argc, char const *argv[])
