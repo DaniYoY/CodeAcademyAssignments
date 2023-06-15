@@ -1,9 +1,9 @@
 #include "PhoneContact.hpp"
 
-static const std::string LINE_SEPARATOR_SIGN = "\n";
-static const std::string BLOCKED_SIGN = "! BLOCKED CONTACT !";
-
-PhoneContact::PhoneContact(const std::string & name="", const std::string & number=""):m_isBlackListed{false}, m_name{name}, m_number{number}  {};
+const std::string PhoneContact::LINE_SEPARATOR_SIGN = "\n";
+const std::string PhoneContact::BLOCKED_SIGN = "! BLOCKED CONTACT !";
+PhoneContact::PhoneContact() : m_isBlackListed{false}, m_name{""}, m_number{""} {};
+PhoneContact::PhoneContact(const std::string & name, const std::string & number):m_isBlackListed{false}, m_name{name}, m_number{number}  {};
 
 const std::string PhoneContact::getPhoneNumber() const{
     return this->m_number;

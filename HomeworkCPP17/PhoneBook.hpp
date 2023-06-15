@@ -11,7 +11,7 @@
 class PhoneBook
 {     
 private:
-    static const std::string MISSING_CONTACT_STR;
+    static const std::string MISSING_CONTACT;
 private:
     std::map<const std::string, PhoneContact> m_contacts;
     std::set<std::string> m_blocked;

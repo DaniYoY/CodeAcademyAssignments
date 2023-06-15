@@ -1,6 +1,8 @@
 #include "PhoneBook.hpp"
 #include<map>
-
+    
+    const std::string PhoneBook::MISSING_CONTACT = "No such Contact";
+   
     PhoneBook::PhoneBook()
     {
     }
@@ -11,7 +13,8 @@
 
 
     const std::string PhoneBook::GetNumber(const std::string& name) const{
-        return getContacts()[name].getPhoneNumber();
+        auto iter = getContacts().find(name);
+        return iter != getContacts().end() ? getContacts()[name].getPhoneNumber() : MISSING_CONTACT;
     }
 
     std::map<const std::string, PhoneContact> PhoneBook::getContacts() const{

@@ -21,6 +21,19 @@ int main(int argc, char const *argv[])
     std::cout<<"TEST 3 \n\n\n";
     b.blockContact("Nani");
     b.printContacts(true);
+
+    std::cout<<"TEST 4 \n\n\n";
+    PhoneBook a{};
+    a.AddContact("Kali","89498654");
+    a.AddContact("Alis","0000000");
+    a.AddContact("Bobi","38435900008654");
+    a.AddContact("Bani","18946438654");
+    a.AddContact("Tobi","689455554");
+    a.AddContact("Wan","18949877754");
+    a.AddContact("Kon","12349100000001224");
+    b.merge(a);
+    b.printContacts(true);
+    
     return 0;
 }
 
