@@ -20,8 +20,8 @@ void enterText(std::vector<std::string> & v){
     while (!std::cin.eof())
     {
         std::cin >> word;
-        auto posToStartErasure = std::remove_if(word.begin(),word.end(), [](char a) { return std::ispunct(a);});
-        word.erase(posToStartErasure,word.end());
+        auto posToStartErasurePunt = std::remove_if(word.begin(),word.end(), [](char a) { return std::ispunct(a);});
+        word.erase(posToStartErasurePunt,word.end());
         v.push_back(word);
     }
     

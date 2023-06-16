@@ -10,7 +10,7 @@
 bool containsZeroInBinary(int number){
     while (number > 0)
     {
-        if (~number&1)
+        if (~number&1) 
         {
             return true;
         }

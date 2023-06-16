@@ -49,9 +49,9 @@ public:
 
 void sortOrders(std::vector<ClientOrder> & v, ClientOrder::clientOrderComparator comparator)
 {
-    std::sort(v.begin(),v.end(), comparator); 
+    std::stable_sort(v.begin(),v.end(), comparator); 
 }
-
+////////////////////////////////////
 int main(int argc, char const *argv[])
 {
     std::vector<ClientOrder> v {
