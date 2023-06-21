@@ -4,10 +4,9 @@
 
 #include <iostream>
 
-int * addArrToCurrentArray(int *&currentArray, const int*  values)
+int * addArrToCurrentArray(int *&currentArray, size_t size,const int*  values, size_t valuesSize)
 {
-    size_t size = sizeof(currentArray) / sizeof (*currentArray);
-    size_t valuesSize = sizeof(values) / sizeof (*values); 
+
     int *newArray = new int[size + valuesSize];
     for (size_t i = 0; i < size; i++)
     {
@@ -35,9 +34,11 @@ int main()
     }
 
     int addition[]{3,5,6,98,7};
-    numbers = addArrToCurrentArray(numbers, addition);
+
+    size_t valuesSize = sizeof(addition) / sizeof (*addition); 
+    numbers = addArrToCurrentArray(numbers,size, addition, valuesSize);
     //  print numbers
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < size+valuesSize; i++)
     {
         std::cout<< *(numbers +i) <<" ";
     }
