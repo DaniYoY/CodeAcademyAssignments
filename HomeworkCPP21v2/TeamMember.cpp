@@ -58,6 +58,10 @@ void TeamMember::send(const std::string& msg)
     auto message = std::make_shared<TeamMessage>(msg, m_name);
     m_messages.push_back(message);
 }
+void TeamMember::receive(std::shared_ptr<TeamMessage> message)
+{
+    m_messages.push_back(message);
+}
 void TeamMember::forget(const TeamMessage &msg)
 {
     auto it = std::find_if(m_messages.begin(), m_messages.end(), [&](std::shared_ptr<TeamMessage>& iter){return (*iter) == msg;});

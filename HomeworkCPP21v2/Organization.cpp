@@ -29,7 +29,7 @@ void Organization::printAllTeams()
                 return team.first.lock();
             }
         }
-        return nullptr;
+        throw std::invalid_argument("There is no team! First create it!");
     }
 
 
@@ -38,7 +38,7 @@ void Organization::printAllTeamMembers()
     int i{0};
     for (auto &member : allMembers)
     {
-        std::cout<< i << ' ' << (*member).getName() << std::endl;
+        std::cout<< i++ << ' ' << (*member).getName() << std::endl;
     }
 }
 
@@ -68,3 +68,12 @@ void Organization::createTeam(const std::string & teamName,  TeamMember& member)
     member.create(teamName);
     allTeams[member.getTeamWeakPtr()].insert(&member);
 }
+
+   void Organization::sendTeamMessage(const std::string& msg, TeamMember& member)
+   {
+        auto message = std::make_shared<TeamMessage>(msg, member.getName());
+        for (TeamMember* mem : allTeams[member.getTeamWeakPtr()])
+        {
+            (*mem).receive(message);
+        }        
+   }

@@ -1,19 +1,6 @@
-// Задача 01
-// Напишете собствен vector клас, който има елементи от тип int. Класът трябва да дефинира следното:
-// ● Default constructor, който създава празен vector.
-// ● Конструктор, който приема размер и инициализира елементите на 0
-// ● size операция, която връща броя елементи в контейнера
-// ● at операция, работеща по същия начин като vector<int>::at от стандартната библиотека (проверява за
-// валиден достъп по индекс и може да хвърли exception.
-// ● Copy control members
-// ○ Имплементирайте swap операция и използвайте copy-and-swap идиома за присвояването.
-// ○ Контейнерът трябва да работи по сходен начин с std::vector и да прави deep copy на паметта с
-// елементите на heap-a при копиране.
-// ● Имплементирайте логика с удвояващ се капацитет всеки път когато добавяме елемент и сме
-// достигнали максималния капацитет.
-// ● push_back reserve и capacity методи, сходни на тези на std::vector
-// С цел упражнение, използвайте new[] и delete[].
-// ● Напишете тестов код, който проверява дали всичко работи правилно с lvalues и с rvalues
+// Задача 02
+// Разширете функционалността на ca::vector класа, добавяйки операторите, които биха
+// направили интерфейса му сходен с този на std::vector. Не дефинирайте итератор тип.
 
 #include<iostream>
 #include<vector>
@@ -186,6 +173,64 @@ public:
         }
         std::cout << std::endl;
     }
+
+    int& operator[](size_t index)
+    {
+             try
+        {
+            return *(m_arr + index);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << "no such position" << '\n';
+        }
+    }
+    const int& operator[](size_t index) const
+    {
+        return const_cast<CustomString*>(this)->operator[](index);
+    }
+    friend bool operator<(const CustomString& v1, const CustomString& v2){
+        for (size_t i = 0; i < (v1.size() <v2.size()? v1.size() : v2.size()); i++)
+        {
+            if (v1[i] < v2[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    friend bool operator==(const CustomString& v1, const CustomString& v2)
+    {
+                for (size_t i = 0; i < (v1.size() <v2.size()? v1.size() : v2.size()); i++)
+        {
+            if (v1[i] != v2[i])
+            {
+                return false;
+            }
+        }
+        if (v1.size() != v2.size())
+        {
+            return false;
+        }
+        return true;
+    }
+    friend bool operator!=(const CustomString& v1, const CustomString& v2)
+    {
+        return !(v1 == v2);
+    }
+    friend bool operator<=(const CustomString& v1, const CustomString& v2)
+    {
+        return (v1 < v2) || (v1 == v2);
+    }
+    friend bool operator>(const CustomString& v1, const CustomString& v2)
+    {
+        return (v1 != v2) && !(v1 < v2);
+    }
+    friend bool operator>=(const CustomString& v1, const CustomString& v2)
+    {
+        return v1 > v2 || v1 == v2;
+    }
+
 };
 
 int main(int argc, char const *argv[])
@@ -276,6 +321,26 @@ int main(int argc, char const *argv[])
     std::cout << "Test  at number: " << ++testNum << std::endl;
     std::cout << "element on a position in vec9: " <<vec9.at(2) << '\n';
     std::cout << "element on a  position outside vec9: " <<vec9.at(100) << '\n';
+    // subscript operator
+    CustomString v10;
+    v10.push_back(1);
+    v10.push_back(2);
+    v10.push_back(3);
+    std::cout << "Test  subscript oprtr number: " << ++testNum << std::endl;
+    std::cout << "element on a  position 1 is 2,so it is : " <<vec9[1] << '\n';
+    // comparison operators
+    CustomString vec11(v10);
+    CustomString vec12;
+    vec12.push_back(7);
+    vec12.push_back(8);
+    std::cout << "Test  == for true number: " << ++testNum << " is " << (vec11 == v10) << std::endl;
+    std::cout << "Test  == for false number: " << ++testNum << " is " << (vec12 == v10) << std::endl;
+    std::cout << "Test  != for true number: " << ++testNum << " is " << (vec12 != v10) << std::endl;
+    std::cout << "Test  == for false number: " << ++testNum << " is " << (vec11 != v10) << std::endl;
+    std::cout << "Test  < for true number: " << ++testNum << " is " << (v10 < vec12) << std::endl;
+    std::cout << "Test  < for false number: " << ++testNum << " is " << (vec11 < v10) << std::endl;
+    std::cout << "Test  > for true number: " << ++testNum << " is " << (vec12 > vec11) << std::endl;
+    std::cout << "Test  > for false number: " << ++testNum << " is " << (vec11 > v10) << std::endl;
 
     return 0;
 }

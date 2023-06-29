@@ -5,7 +5,7 @@
 #include<iostream>
 #include<memory>
 
-class CustomVector
+class CustomString
 
 {
 private:
@@ -28,10 +28,10 @@ private:
     }
 
 public:
-    CustomVector(): m_size{initSize}, m_capacity{initSize}, m_arr{std::unique_ptr<int[]>( new int[initSize])} {
+    CustomString(): m_size{initSize}, m_capacity{initSize}, m_arr{std::unique_ptr<int[]>( new int[initSize])} {
         
     };
-    CustomVector(const size_t& capacity): m_size{capacity}, m_capacity{capacity}, m_arr{std::unique_ptr<int[]>( new int[initSize])}  {
+    CustomString(const size_t& capacity): m_size{capacity}, m_capacity{capacity}, m_arr{std::unique_ptr<int[]>( new int[initSize])}  {
         for (size_t i = 0; i < capacity; i++)
         {
             *(m_arr.get()+i) = 0;
@@ -49,7 +49,7 @@ public:
     //     }
         
     // };
-    CustomVector(CustomVector&& obj){
+    CustomString(CustomString&& obj){
         m_size = obj.m_size;
         obj.m_size = 0;
 
@@ -59,7 +59,7 @@ public:
         m_arr.reset(obj.m_arr.release());
         obj.m_arr.get_deleter();
     }
-    ~CustomVector(){
+    ~CustomString(){
     };
     size_t size() const{
         return m_size;
@@ -116,7 +116,7 @@ public:
             newArray.get_deleter();
         } 
     };
-    void swap(CustomVector& obj){
+    void swap(CustomString& obj){
             size_t temp_capacity = m_capacity; 
             m_capacity = obj.m_capacity;
             obj.m_capacity = temp_capacity;
@@ -137,7 +137,7 @@ public:
     //     m_arr = obj.m_arr.get();
     //     return *this;
     // };  
-    CustomVector& operator=(CustomVector&& obj){
+    CustomString& operator=(CustomString&& obj){
        
        
         m_capacity = obj.m_capacity;
@@ -162,11 +162,11 @@ int main(int argc, char const *argv[])
     int testNum{0};
     // create default constructor
     std::cout << "Test def constr number: " << ++testNum << std::endl;
-    CustomVector vec1;
+    CustomString vec1;
     vec1.print();
     // create capacity constructor
     std::cout << "Test cap constr number: " << ++testNum << std::endl;
-    CustomVector vec2(3);
+    CustomString vec2(3);
     vec2.print();
     // create copy Constructor and push_back no resizing
     // std::cout << "Test copy constr number: " << ++testNum << std::endl;
@@ -177,13 +177,13 @@ int main(int argc, char const *argv[])
     std::cout << "Test && constr number: " << ++testNum << std::endl;
     vec1.push_back(2);
     vec1.print();
-    CustomVector vec4(std::move(vec1));
+    CustomString vec4(std::move(vec1));
     vec4.print();
     vec1.print();
     // destructor, size, capacity
     std::cout << "Test size, capacity, destruct number: " << ++testNum << std::endl;
     {
-        CustomVector vec5;
+        CustomString vec5;
         vec5.push_back(25);
         vec5.push_back(7924);
         vec5.push_back(12);
@@ -194,9 +194,9 @@ int main(int argc, char const *argv[])
     }
     // test on swap and 2 operators;
     std::cout << "Test swap number: " << ++testNum << std::endl;
-    CustomVector vec6;
+    CustomString vec6;
     vec6.push_back(666666);
-    CustomVector vec7;
+    CustomString vec7;
     vec7.push_back(7777777);
     std::cout<< "vec 6: ";
     vec6.print();
@@ -215,7 +215,7 @@ int main(int argc, char const *argv[])
     // vec7.print();
     
     std::cout << "Test = && number: " << ++testNum << std::endl;
-    CustomVector vec8; 
+    CustomString vec8; 
     std::cout<< "vec 6: ";
     vec6.print();
     std::cout<< "vec 8: ";
@@ -229,7 +229,7 @@ int main(int argc, char const *argv[])
 
     // reverse
     std::cout << "Test reverse number: " << ++testNum << std::endl;
-    CustomVector vec9;
+    CustomString vec9;
     vec9.push_back(1);
     vec9.push_back(2);
     vec9.push_back(3);

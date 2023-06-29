@@ -10,8 +10,9 @@ int main()
     std::cout << "Please choose an option or Press \"exit\" for closing the app:\n"
                  "1. Create new Member\n"
                  "2. Access as existing member\n";
-    while (!std::getline(std::cin, line).eof())
+    while (true)
     {
+        std::getline(std::cin, line);
 
         if (line == "exit")
         {
@@ -37,7 +38,14 @@ int main()
             org.createTeamMember(line);
             break;
         case 2:
-            actAsMember(org);
+            try
+            {
+                actAsMember(org);
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
             break;
         default:
             std::cout << "this is not an option" << std::endl;
@@ -71,13 +79,13 @@ void actAsMember(Organization &o)
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
-        std::cout << "You are not you, select number next time!";
+        std::cout << "You are not you, select number next time!\n";
         return;
     }
     TeamMember &member = o.getMemberByIndex(option);
     std::cout << "select an action, " << member.getName()
               << "\n Your team is " << member.getTeamName()
-              << "1. Leave team\n"
+              << "\n1. Leave team\n"
                  "2. Join team\n"
                  "3. Change team\n"
                  "4. Create team\n"
@@ -98,7 +106,7 @@ void actAsMember(Organization &o)
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
-        std::cout << "You are not you, select number next time!";
+        std::cout << "You are not you, select number next time!\n";
         return;
     }
     switch (option)
@@ -130,9 +138,9 @@ void actAsMember(Organization &o)
         break;
     case 6:
         member.printMessages();
-        std::cout << "enter message index" << std::endl;
+        std::cout << "enter message" << std::endl;
         std::getline(std::cin, line);
-        member.send(line);
+        o.sendTeamMessage(line,member);
         break;
     }
 }

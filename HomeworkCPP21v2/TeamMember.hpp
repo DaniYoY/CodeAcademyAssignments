@@ -36,8 +36,14 @@ public:
     void create(const std::string & teamName = "");
     void send(const std::string& msg);
     void forget (const TeamMessage& msg);
+    void receive(std::shared_ptr<TeamMessage> message);
     TeamMessage& getMessageByIndex(size_t ind) const
     {
+        if (ind < 0 || ind >= m_messages.size())
+        {
+            throw std::invalid_argument("there is no such index");
+        }
+        
         return *(m_messages[ind]);
     }
     void printMessages();

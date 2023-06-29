@@ -6,12 +6,12 @@
             "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
-                "-g",
+                "-g++",
                 "${workspaceFolder}/HomeworkCPP21v2\\*.h",
                 "${workspaceFolder}/HomeworkCPP21v2\\*.cpp",
                 // "${workspace}\\*.h",
                 // "${workspace}\\*.cpp",
-                "${file}",
+                // "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

@@ -42,6 +42,7 @@ public:
     void leaveTeam(TeamMember& member);
     void createTeam(const std::string & teamName, TeamMember& member);
 
+    void sendTeamMessage(const std::string& msg, TeamMember& member);
 };
 
 

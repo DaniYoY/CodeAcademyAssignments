@@ -18,11 +18,12 @@ private:
     void tryOpeningFile(){
              try
         {
-            file.open(filePath);
-            while (!file.eof())
+            file.open(filePath, std::fstream::out | std::fstream::app);
+            if (!file)
             {
-                file.get();
+                throw std::invalid_argument("Bad FILE");
             }
+            
         }
         catch(const std::exception& e)
         {
@@ -41,7 +42,7 @@ public:
     };
     FileHandler(const FileHandler&) = delete;
 
-    void swap(FileHandler obj1, FileHandler obj2){
+    static void swap(FileHandler&& obj1, FileHandler&& obj2){
         auto temp = std::move(obj1);
         obj1 = std::move(obj2);
         obj2 = std::move(temp);

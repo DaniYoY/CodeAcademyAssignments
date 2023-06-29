@@ -1,19 +1,15 @@
 // Задача 01
-// Напишете собствен vector клас, който има елементи от тип int. Класът трябва да дефинира следното:
-// ● Default constructor, който създава празен vector.
-// ● Конструктор, който приема размер и инициализира елементите на 0
-// ● size операция, която връща броя елементи в контейнера
-// ● at операция, работеща по същия начин като vector<int>::at от стандартната библиотека (проверява за
-// валиден достъп по индекс и може да хвърли exception.
-// ● Copy control members
-// ○ Имплементирайте swap операция и използвайте copy-and-swap идиома за присвояването.
-// ○ Контейнерът трябва да работи по сходен начин с std::vector и да прави deep copy на паметта с
-// елементите на heap-a при копиране.
-// ● Имплементирайте логика с удвояващ се капацитет всеки път когато добавяме елемент и сме
-// достигнали максималния капацитет.
-// ● push_back reserve и capacity методи, сходни на тези на std::vector
-// С цел упражнение, използвайте new[] и delete[].
-// ● Напишете тестов код, който проверява дали всичко работи правилно с lvalues и с rvalues
+// Напишете собствена версия на std::string класа - ca::string.
+// ● Дефинирайте често срещаните методи, които дефинирахме и за vector класа в задача
+// 01 от тема 22.
+// ● Дефинирайте c_str метод.
+// ● Изберете сами стратегията за менажиране на динамичната памет. Няма изискване да
+// използваме new[] и delete[].
+// ● Не дефинирайте iterator типове, с цел да ограничим scope-a на задачата.
+// ● Дефинирайте всички overloaded оператори, които сметнете че е необходимо.
+// Направете интерфейса на класа сходен с този на std::string. Целта е да можем да
+// извършваме същите операции, които имаме дефинирани за std::string, включително и
+// тези, които работят със C-Style strings.
 
 #include<iostream>
 #include<vector>
@@ -24,10 +20,12 @@ class CustomString
 private:
     static const size_t initSize{0};
 
+    using strType = char;
+
     size_t m_size;
     size_t m_capacity;
-    int* m_arr;
-    int* updateArray(int* & currentArray, size_t & size){    
+    strType* m_arr;
+    strType* updateArray(char* & currentArray, size_t & size){    
         bool wasZeroSize{false};
         if(size ==0) 
         {
@@ -35,7 +33,7 @@ private:
             wasZeroSize = true;
         }
         size *=2;
-        int * newArray = new int[size];
+        strType * newArray = new strType[size];
         for (size_t i = 0; i < size; i++)
         {
             newArray[i] = *(currentArray + i);
@@ -48,9 +46,15 @@ private:
     }
 
 public:
-    CustomString(): m_size{initSize}, m_capacity{initSize}, m_arr{new int[initSize]} {
+    CustomString(): m_size{initSize}, m_capacity{initSize}, m_arr{new strType[initSize]} {
     };
-    CustomString(const size_t& capacity): m_size{capacity}, m_capacity{capacity}, m_arr{new int[capacity]}  {
+    CustomString(const char* arr): m_size{initSize}, m_capacity{initSize}, m_arr{new strType[initSize]} {
+        for (auto i = arr; *i != '\0'; i++)
+        {
+            this->push_back(*i);
+        }
+    };
+    CustomString(const size_t& capacity): m_size{capacity}, m_capacity{capacity}, m_arr{new strType[capacity]}  {
         for (size_t i = 0; i < capacity; i++)
         {
             m_arr[i] = 0;
@@ -61,7 +65,7 @@ public:
         m_size = obj.m_size;
         m_capacity = obj.m_capacity;
 
-        m_arr = new int[m_size];
+        m_arr = new strType[m_size];
         for (size_t i = 0; i < m_size; i++)
         {
             m_arr[i] = obj.m_arr[i];
@@ -93,7 +97,7 @@ public:
     size_t capacity() const{
         return m_capacity;
     };
-    int& at(const size_t position){
+    strType& at(const size_t position){
         try
         {
             return *(m_arr + position);
@@ -126,7 +130,7 @@ public:
                 m_arr[size()-1-i] = temp;
             }
         }else{
-             int * newArray = new int[newCapacity];
+             strType * newArray = new strType[newCapacity];
              for (size_t i = 0; i < size(); i++)
             {
                 newArray[i] = *(m_arr +size()-1- i);
@@ -152,7 +156,7 @@ public:
             m_size = obj.m_size;
             obj.m_size = temp_size;
             
-            int * tempPtr = m_arr;
+            strType * tempPtr = m_arr;
             m_arr = obj.m_arr;
             obj.m_arr = tempPtr;
 
@@ -186,6 +190,87 @@ public:
         }
         std::cout << std::endl;
     }
+    CustomString& operator+(const char* addition){
+
+    }
+    friend CustomString& operator+(CustomString& str1, CustomString str2)
+    {
+           for (auto i = 0; i <str2.size(); i++)
+        {
+            str1.push_back(str2[i]);
+        }
+        return str1;
+    } 
+    CustomString& operator+=(CustomString str2)
+    {
+           *this = *this + str2;
+        return *this;
+    } 
+    strType& operator[](size_t index)
+    {
+             try
+        {
+            return *(m_arr + index);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << "no such position" << '\n';
+        }
+    }
+    const strType& operator[](size_t index) const
+    {
+        return const_cast<CustomString*>(this)->operator[](index);
+    }
+    friend bool operator<(const CustomString& v1, const CustomString& v2){
+        for (size_t i = 0; i < (v1.size() <v2.size()? v1.size() : v2.size()); i++)
+        {
+            if (v1[i] < v2[i])
+            {
+                return true;
+            }else if(v1[i] > v2[i])
+            {
+                return false;
+            }
+        }
+        if (v1.size() < v2.size())
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    friend bool operator==(const CustomString& v1, const CustomString& v2)
+    {
+        for (size_t i = 0; i < (v1.size() <v2.size()? v1.size() : v2.size()); i++)
+        {
+            if (v1[i] != v2[i])
+            {
+                return false;
+            }
+        }
+        if (v1.size() != v2.size())
+        {
+            return false;
+        }
+        return true;
+    }
+    friend bool operator!=(const CustomString& v1, const CustomString& v2)
+    {
+        return !(v1 == v2);
+    }
+    friend bool operator<=(const CustomString& v1, const CustomString& v2)
+    {
+        return (v1 < v2) || (v1 == v2);
+    }
+    friend bool operator>(const CustomString& v1, const CustomString& v2)
+    {
+        return (v1 != v2) && !(v1 < v2);
+    }
+    friend bool operator>=(const CustomString& v1, const CustomString& v2)
+    {
+        return v1 > v2 || v1 == v2;
+    }
+
 };
 
 int main(int argc, char const *argv[])
@@ -201,7 +286,7 @@ int main(int argc, char const *argv[])
     vec2.print();
     // create copy Constructor and push_back no resizing
     std::cout << "Test copy constr number: " << ++testNum << std::endl;
-    vec1.push_back(23);
+    vec1.push_back('a');
     CustomString vec3(vec1);
     vec3.print();
     // create rvlue constructor
@@ -215,19 +300,19 @@ int main(int argc, char const *argv[])
     {
         CustomString vec5;
         vec5.push_back(25);
-        vec5.push_back(7924);
+        vec5.push_back('b');
         vec5.push_back(12);
-        vec5.push_back(257);
-        vec5.push_back(2975);
+        vec5.push_back('y');
+        vec5.push_back('e');
         std:: cout<< "capacity: " << vec5.capacity() << '\n';
         std:: cout<< "size: " << vec5.size() << '\n';
     }
     // test on swap and 2 operators;
     std::cout << "Test swap number: " << ++testNum << std::endl;
     CustomString vec6;
-    vec6.push_back(666666);
+    vec6.push_back('a');
     CustomString vec7;
-    vec7.push_back(7777777);
+    vec7.push_back('b');
     std::cout<< "vec 6: ";
     vec6.print();
     std::cout<< "vec 7: ";
@@ -260,22 +345,42 @@ int main(int argc, char const *argv[])
     // reverse
     std::cout << "Test reverse number: " << ++testNum << std::endl;
     CustomString vec9;
-    vec9.push_back(1);
-    vec9.push_back(2);
-    vec9.push_back(3);
+    vec9.push_back('1');
+    vec9.push_back('2');
+    vec9.push_back('3');
     vec9.print();
     vec9.reserve();
     vec9.print();
     std::cout << "Test reverse & increase number: " << ++testNum << std::endl;
-    vec9.reserve(2);
+    vec9.reserve('2');
     vec9.print();
     std::cout << "capacity before reversing: " <<vec9.capacity() << '\n';
-    vec9.reserve(26);
+    vec9.reserve('26');
     std::cout << "capacity after reversing: " <<vec9.capacity() << '\n';
     // at
     std::cout << "Test  at number: " << ++testNum << std::endl;
     std::cout << "element on a position in vec9: " <<vec9.at(2) << '\n';
     std::cout << "element on a  position outside vec9: " <<vec9.at(100) << '\n';
+    // subscript operator
+    CustomString v10;
+    v10.push_back('1');
+    v10.push_back('2');
+    v10.push_back('3');
+    std::cout << "Test  subscript oprtr number: " << ++testNum << std::endl;
+    std::cout << "element on a  position 1 is 2,so it is : " <<vec9[1] << '\n';
+    // comparison operators
+    CustomString vec11(v10);
+    CustomString vec12;
+    vec12.push_back('7');
+    vec12.push_back('8');
+    std::cout << "Test  == for true number: " << ++testNum << " is " << (vec11 == v10) << std::endl;
+    std::cout << "Test  == for false number: " << ++testNum << " is " << (vec12 == v10) << std::endl;
+    std::cout << "Test  != for true number: " << ++testNum << " is " << (vec12 != v10) << std::endl;
+    std::cout << "Test  == for false number: " << ++testNum << " is " << (vec11 != v10) << std::endl;
+    std::cout << "Test  < for true number: " << ++testNum << " is " << (v10 < vec12) << std::endl;
+    std::cout << "Test  < for false number: " << ++testNum << " is " << (vec11 < v10) << std::endl;
+    std::cout << "Test  > for true number: " << ++testNum << " is " << (vec12 > vec11) << std::endl;
+    std::cout << "Test  > for false number: " << ++testNum << " is " << (vec11 > v10) << std::endl;
 
     return 0;
 }
