@@ -190,8 +190,14 @@ public:
         }
         std::cout << std::endl;
     }
-    CustomString& operator+(const char* addition){
-
+    char * c_str(){
+        return m_arr;
+    }
+    CustomString& operator+(const char* arr){
+         for (auto i = arr; *i != '\0'; i++)
+        {
+            this->push_back(*i);
+        }
     }
     friend CustomString& operator+(CustomString& str1, CustomString str2)
     {

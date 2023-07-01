@@ -29,6 +29,7 @@ public:
 private:
     teamName m_name;
     static std::map<teamPtr, std::set<TeamMember *>, TeamComarator> allTeams;
+    // static std::map<teamPtr, std::set<TeamMember *>, std::owner_less<Team>> allTeams;
 
 public:
     Team(teamName name = "") : m_name{name}
@@ -36,6 +37,7 @@ public:
     }
 
     static std::map<teamPtr, std::set<TeamMember *>, TeamComarator> getTeams()
+    // static std::map<teamPtr, std::set<TeamMember *>, std::owner_less<Team>> getTeams()
     {
         return allTeams;
     }

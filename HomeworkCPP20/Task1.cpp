@@ -10,16 +10,16 @@
 #include<memory>
 #include<vector>
 
-class Task1
+class PointFactory
 {
 private:
-    std::vector<std::shared_ptr<std::string>> ptrPool;
+    std::vector<std::shared_ptr<std::string>> pointPool;
 public:
-    Task1(){};
-    ~Task1(){};
+    PointFactory(){};
+    ~PointFactory(){};
     std::string getName(const std::string & name)
     {
-        for (const std::shared_ptr<std::string> & pointer : ptrPool)
+        for (const std::shared_ptr<std::string> & pointer : pointPool)
         {
             if(*pointer == name){
                 return *pointer;
@@ -30,14 +30,14 @@ public:
 
     std::shared_ptr<std::string> getPointer(const std::string & name)
     {
-        for (const std::shared_ptr<std::string> & pointer : ptrPool)
+        for (const std::shared_ptr<std::string> & pointer : pointPool)
         {
             if(*pointer == name){
                 return pointer;
             }
         }
         std::shared_ptr<std::string> p = std::make_shared<std::string>(name);
-        ptrPool.push_back(p);
+        pointPool.push_back(p);
         return getPointer(name);
     }
 
