@@ -5,7 +5,7 @@
 #include<iostream>
 #include<vector>
 
-class CustomString
+class CustomVec
 
 {
 private:
@@ -35,15 +35,15 @@ private:
     }
 
 public:
-    CustomString(): m_size{initSize}, m_capacity{initSize}, m_arr{new int[initSize]} {
+    CustomVec(): m_size{initSize}, m_capacity{initSize}, m_arr{new int[initSize]} {
     };
-    CustomString(const size_t& capacity): m_size{capacity}, m_capacity{capacity}, m_arr{new int[capacity]}  {
+    CustomVec(const size_t& capacity): m_size{capacity}, m_capacity{capacity}, m_arr{new int[capacity]}  {
         for (size_t i = 0; i < capacity; i++)
         {
             m_arr[i] = 0;
         }
     };
-    CustomString(const CustomString& obj)
+    CustomVec(const CustomVec& obj)
     {
         m_size = obj.m_size;
         m_capacity = obj.m_capacity;
@@ -55,7 +55,7 @@ public:
         }
         
     };
-    CustomString(CustomString&& obj){
+    CustomVec(CustomVec&& obj){
         m_size = obj.m_size;
         obj.m_size = 0;
 
@@ -65,7 +65,7 @@ public:
         m_arr = obj.m_arr;
         obj.m_arr = nullptr;
     }
-    ~CustomString(){
+    ~CustomVec(){
         if(m_capacity == 0 || m_size == 0){
             delete[] m_arr;
             m_arr = nullptr;
@@ -130,7 +130,7 @@ public:
             newArray = nullptr;
         } 
     };
-    void swap(CustomString& obj){
+    void swap(CustomVec& obj){
             size_t temp_capacity = m_capacity; 
             m_capacity = obj.m_capacity;
             obj.m_capacity = temp_capacity;
@@ -145,13 +145,13 @@ public:
 
     };
     // shallow copy
-    CustomString& operator=(const CustomString& obj){
+    CustomVec& operator=(const CustomVec& obj){
         m_capacity = obj.m_capacity;
         m_size = obj.m_size;
         m_arr = obj.m_arr;
         return *this;
     };  
-    CustomString& operator=(CustomString&& obj){
+    CustomVec& operator=(CustomVec&& obj){
         if(m_size != 0){
         delete[] m_arr;
     }
@@ -187,9 +187,9 @@ public:
     }
     const int& operator[](size_t index) const
     {
-        return const_cast<CustomString*>(this)->operator[](index);
+        return const_cast<CustomVec*>(this)->operator[](index);
     }
-    friend bool operator<(const CustomString& v1, const CustomString& v2){
+    friend bool operator<(const CustomVec& v1, const CustomVec& v2){
         for (size_t i = 0; i < (v1.size() <v2.size()? v1.size() : v2.size()); i++)
         {
             if (v1[i] < v2[i])
@@ -199,7 +199,7 @@ public:
         }
         return false;
     }
-    friend bool operator==(const CustomString& v1, const CustomString& v2)
+    friend bool operator==(const CustomVec& v1, const CustomVec& v2)
     {
                 for (size_t i = 0; i < (v1.size() <v2.size()? v1.size() : v2.size()); i++)
         {
@@ -214,19 +214,19 @@ public:
         }
         return true;
     }
-    friend bool operator!=(const CustomString& v1, const CustomString& v2)
+    friend bool operator!=(const CustomVec& v1, const CustomVec& v2)
     {
         return !(v1 == v2);
     }
-    friend bool operator<=(const CustomString& v1, const CustomString& v2)
+    friend bool operator<=(const CustomVec& v1, const CustomVec& v2)
     {
         return (v1 < v2) || (v1 == v2);
     }
-    friend bool operator>(const CustomString& v1, const CustomString& v2)
+    friend bool operator>(const CustomVec& v1, const CustomVec& v2)
     {
         return (v1 != v2) && !(v1 < v2);
     }
-    friend bool operator>=(const CustomString& v1, const CustomString& v2)
+    friend bool operator>=(const CustomVec& v1, const CustomVec& v2)
     {
         return v1 > v2 || v1 == v2;
     }
@@ -238,27 +238,27 @@ int main(int argc, char const *argv[])
     int testNum{0};
     // create default constructor
     std::cout << "Test def constr number: " << ++testNum << std::endl;
-    CustomString vec1;
+    CustomVec vec1;
     vec1.print();
     // create capacity constructor
     std::cout << "Test cap constr number: " << ++testNum << std::endl;
-    CustomString vec2(3);
+    CustomVec vec2(3);
     vec2.print();
     // create copy Constructor and push_back no resizing
     std::cout << "Test copy constr number: " << ++testNum << std::endl;
     vec1.push_back(23);
-    CustomString vec3(vec1);
+    CustomVec vec3(vec1);
     vec3.print();
     // create rvlue constructor
     std::cout << "Test && constr number: " << ++testNum << std::endl;
     vec1.print();
-    CustomString vec4(std::move(vec1));
+    CustomVec vec4(std::move(vec1));
     vec4.print();
     vec1.print();
     // destructor, size, capacity
     std::cout << "Test size, capacity, destruct number: " << ++testNum << std::endl;
     {
-        CustomString vec5;
+        CustomVec vec5;
         vec5.push_back(25);
         vec5.push_back(7924);
         vec5.push_back(12);
@@ -269,9 +269,9 @@ int main(int argc, char const *argv[])
     }
     // test on swap and 2 operators;
     std::cout << "Test swap number: " << ++testNum << std::endl;
-    CustomString vec6;
+    CustomVec vec6;
     vec6.push_back(666666);
-    CustomString vec7;
+    CustomVec vec7;
     vec7.push_back(7777777);
     std::cout<< "vec 6: ";
     vec6.print();
@@ -290,7 +290,7 @@ int main(int argc, char const *argv[])
     vec7.print();
     
     std::cout << "Test = && number: " << ++testNum << std::endl;
-    CustomString vec8; 
+    CustomVec vec8; 
     std::cout<< "vec 6: ";
     vec6.print();
     std::cout<< "vec 8: ";
@@ -304,7 +304,7 @@ int main(int argc, char const *argv[])
 
     // reverse
     std::cout << "Test reverse number: " << ++testNum << std::endl;
-    CustomString vec9;
+    CustomVec vec9;
     vec9.push_back(1);
     vec9.push_back(2);
     vec9.push_back(3);
@@ -322,15 +322,15 @@ int main(int argc, char const *argv[])
     std::cout << "element on a position in vec9: " <<vec9.at(2) << '\n';
     std::cout << "element on a  position outside vec9: " <<vec9.at(100) << '\n';
     // subscript operator
-    CustomString v10;
+    CustomVec v10;
     v10.push_back(1);
     v10.push_back(2);
     v10.push_back(3);
     std::cout << "Test  subscript oprtr number: " << ++testNum << std::endl;
     std::cout << "element on a  position 1 is 2,so it is : " <<vec9[1] << '\n';
     // comparison operators
-    CustomString vec11(v10);
-    CustomString vec12;
+    CustomVec vec11(v10);
+    CustomVec vec12;
     vec12.push_back(7);
     vec12.push_back(8);
     std::cout << "Test  == for true number: " << ++testNum << " is " << (vec11 == v10) << std::endl;
