@@ -37,7 +37,7 @@ struct Graph
     {
         while (!copyOfGateways.empty())
         {
-            int currentGateway = copyOfGateways.back();
+            int currentGateway = copyOfGateways.back(); // possibly check
             travel.push(currentGateway);
             isVisited[currentGateway] = true;
             for (size_t j = 0; j < mapping[currentGateway].size(); j++)
@@ -92,6 +92,8 @@ struct Graph
  * the standard input according to the problem statement.
  **/
 vector<Graph> mapping;
+
+
 int main()
 {
     int n; // the total number of nodes in the level, including the gateways
