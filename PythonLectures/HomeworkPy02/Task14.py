@@ -5,13 +5,24 @@
 # Output: "HELLO"
 
 def manipulate_string(string_input, operation):
-    if operation == "uppercase":
+    def to_upper():
         return str(string_input).upper()
-    elif operation == "lowercase":
+
+    def to_lower():
         return str(string_input).lower()
-    elif operation == "capitalization":
+
+    def to_capitalization():
         return str(string_input).capitalize()
+
+    if operation == "uppercase":
+        return to_upper()
+    elif operation == "lowercase":
+        return to_lower()
+    elif operation == "capitalization":
+        return to_capitalization()
 
 
 #test
 print(manipulate_string("hElLo", "capitalization"))
+print(manipulate_string("hElLo", "uppercase"))
+print(manipulate_string("hElLo", "lowercase"))

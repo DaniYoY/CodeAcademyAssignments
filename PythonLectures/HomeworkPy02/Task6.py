@@ -5,6 +5,7 @@
 
 def generate_prime_number(num_upper_border):
     current_num = 2
+    # while current_num <= num_upper_border:
     while current_num < num_upper_border:
         for i in range(2, current_num):
             if current_num % i == 0:
