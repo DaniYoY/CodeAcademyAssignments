@@ -3,34 +3,39 @@
 from enum import Enum
 
 
-class Book:
-    in_lib = "IN_LIBRARY"
-    out_of_st = "OUT_OF_STOCK"
-    Status = Enum ("Book status",[in_lib, out_of_st])
+class BookStatus(Enum):
+    OUT_OF_STOCK = 0
+    IN_LIBRARY = 1
 
-    def __init__(self, title, author, ISBN):
-        self.__title = str(title)
-        self.__author = str(author)
-        self.__isbn = str(ISBN)
-        self.__status = Book.Status[Book.in_lib]
+
+class Book:
+
+    def __init__(self, title: str, author: str, ISBN: int):
+        self.__title = title
+        self.__author = author
+        self.__isbn = ISBN
+        self.__status = BookStatus.IN_LIBRARY
 
     def change_status(self):
 
-        if self.__status is Book.Status[Book.in_lib]:
-            self.__status = Book.Status[Book.out_of_st]
+        if self.__status is BookStatus.IN_LIBRARY:
+            self.__status = BookStatus.OUT_OF_STOCK
         else:
-            self.__status = Book.Status[Book.in_lib]
+            self.__status = BookStatus.IN_LIBRARY
 
     def get_status(self):
         return str(self.__status)
 
+    def get_isbn(self):
+        return self.__isbn
+
     def __hash__(self):
-        return hash((self.__title.lower(), self.__author.lower(), self.__isbn.lower()))
+        return hash((self.__title.lower(), self.__author.lower(), self.__isbn))
 
     def __eq__(self, other):
         if isinstance(other, Book):
-            return (self.__title.lower(), self.__author.lower(), self.__isbn.lower()
-                    == other.__title.lower(), other.__author.lower(), other.__isbn.lower())
+            return (self.__title.lower(), self.__author.lower(), self.__isbn
+                    == other.__title.lower(), other.__author.lower(), other.__isbn)
         return False
 
     def __str__(self):

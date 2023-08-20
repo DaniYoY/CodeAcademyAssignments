@@ -1,31 +1,52 @@
 # Librarian Class: A subclass of the user with additional privileges such as
 # adding books, managing users, etc.
 
+from multipledispatch import dispatch
+
+import Book
 import User
 
 
 class Librarian(User.User):
     _generic_name = "Generic Librarian"
     __no_such_book_exept = "There is no such book for librarian to remove"
-    def __init__(self, name=_generic_name, id=None):
-        super().__init__(name, id)
 
-    def add_book(self, library_map, book, quantity):
-        if library_map[book] == 0:
+    def __init__(self, name: str = _generic_name, new_id: int = None):
+        super().__init__(name, new_id)
+
+    def get_id(self) -> int:
+        return super().get_id()
+
+    @staticmethod
+    def add_book(library_map: dict, book: Book.Book, quantity: int):
+        if book not in library_map.keys():
             library_map[book] = quantity
         else:
             library_map[book] += quantity
+            key_book = next(filter(lambda x: x == book, library_map.keys()), None)
 
-    def add_user(self, user_container, user):
-        user_container.add(user)
+            if key_book.get_status() == Book.BookStatus.OUT_OF_STOCK:
+                key_book.change_status()
 
-    def remove_book(self, library_map, book):
-        if library_map[book] == 0:
+    @staticmethod
+    def add_user(user_container: list, user: User.User):
+        user_container.append(user)
+
+    @staticmethod
+    def remove_book(library_map: dict, book: Book.Book) -> bool:
+        if book not in library_map.keys():
             raise ValueError(Librarian.__no_such_book_exept)
+        elif library_map[book] == 1:
+            key_book = next(filter(lambda x: x == book, library_map.keys()), None)
+            if key_book.get_status() == Book.BookStatus.IN_LIBRARY:
+                key_book.change_status()
+            return False
         else:
             library_map[book] -= 1
+            return True
 
-    def remove_user(self, user_container, user):
+    @staticmethod
+    def remove_user(user_container: list, user: User.User):
         user_container.remove(user)
 
     def __str__(self):
