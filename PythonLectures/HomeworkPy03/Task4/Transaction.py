@@ -3,7 +3,10 @@
 # transaction type, date, etc.
 from _datetime import datetime
 from enum import Enum, auto
-import Librarian, Book, User
+
+import Book
+import Librarian
+import User
 
 
 class TransactionType(Enum):

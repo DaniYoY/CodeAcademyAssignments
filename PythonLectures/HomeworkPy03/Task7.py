@@ -28,7 +28,7 @@ def flatten_lists(list_of_lists):
         if isinstance(current_list, list):
             yield current_list
         else:
-            raise Exception("This cannot be iterated")
+            raise Exception("This is not a list cannot be iterated")
     return result
 
 

@@ -6,15 +6,21 @@
 # Example Output: (1, 3), (2, 4)
 
 def convert_to_tuple(*iterables):
-    for iterable in iterables:
-        yield tuple(iterable)
+    max_range = 0
+    for i in iterables:
+        max_range = max(max_range, len(i))
+    dict_container: [int, list] = dict()
+    for i in range(max_range):
+        is_value_not_init = True
+        for iterable in iterables:
+            if is_value_not_init:
+                dict_container[i] = list()
+            if len(iterable) > i:
+                is_value_not_init = False
+                dict_container[i].append(iterable[i])
 
-        # Note: Another version
-
-        # result = list()
-        # for i in iterable:
-        #     result.append(i)
-        # yield tuple(result)
+    for i in dict_container:
+        yield tuple(dict_container[i])
 
 
 result =[]
