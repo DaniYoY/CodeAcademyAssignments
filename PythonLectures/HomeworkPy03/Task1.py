@@ -65,7 +65,8 @@ class Employee:
         else:
             self.__salary -= self.__salary * self.__salary_adjuster
 
-    def __set_role(self, role):
+    @staticmethod
+    def __set_role(role):
         if type(role) == str:
             role = str(role).lower()
             dic = {

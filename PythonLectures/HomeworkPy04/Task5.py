@@ -2,7 +2,7 @@
 # Фаренхайт.
 # Вход: конвертиране на 32 градуса Целзий до Фаренхайт
 # Изход: 89.6 градуса Фаренхайт
-
+# Note to all: Requirement is static methods, but because they are used in Task4. I decided to present this solution
 
 class TemperatureConverter:
     @classmethod
