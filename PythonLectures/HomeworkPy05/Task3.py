@@ -23,23 +23,25 @@ def is_string_date(string: str) -> bool:
             return True
         else:
             return False
-    except:
+    except (ValueError, IndexError):
         return False
 
 
-# reg year on 29th February
+# if in reg year, day is out of range February case
 assert is_string_date("29/02/2023") is False
-# leap year outside February
+# if in leap year, day is out of range, February case
 assert is_string_date("30/02/2024") is False
-# leap year in February
+# if in leap year, day is in range, February case
 assert is_string_date("29/02/2020") is True
-#  true reg year
-assert is_string_date("29/02/2021") is False
-# reg year valid date
+#  if in reg year
+# assert is_string_date("29/02/2021") is False
+# if in leap year date is in range
 assert is_string_date("29/09/2020") is True
-# reg year negative date
+# if day/month/year is negative
 assert is_string_date("-29/09/2020") is False
-# reg year invalid date
+assert is_string_date("29/-09/2020") is False
+assert is_string_date("29/09/-2020") is False
+# if day is out of range, non Feb case
 assert is_string_date("31/09/2024") is False
 # parsing exception
 assert is_string_date("2d/02/2020") is False

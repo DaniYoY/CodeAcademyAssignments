@@ -1,13 +1,22 @@
-#include<iostream>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <sstream>
+#include <string>
+#include <memory>
+#include <array>
+#include <map>
+#include <cstring>
+#include<set>
 
-int main(int argc, char const *argv[])
+int main()
 {
-    int x{3}, y{7};
-    unsigned long res{0};
-    res |= x; 
-    res <<= 8;
-    res |=  y;
-    // return std::to_string(res);
-    std::cout<< res <<std::endl;
-    return 0;
+ std::stringstream str("12 3 6 489 dgdfd 4 6 4");
+ int num{0};
+ while ((str>>num).failbit && !str.eof())
+ {
+  std::cout << num << ' ';
+  str.exceptions(str.failbit);
+ }
+  return 0;
 }

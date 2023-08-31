@@ -13,6 +13,9 @@ def validate_parentheses(string: str) -> bool:
     return True
 
 
+# if string is correct
 assert validate_parentheses('{[]}') is True
+# if string is empty
 assert validate_parentheses('') is False
+# if string is invalid
 assert validate_parentheses('{[a]}') is False

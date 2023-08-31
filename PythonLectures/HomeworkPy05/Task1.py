@@ -10,6 +10,7 @@ def reversing(string: str) -> str:
 
 
 assert reversing('hello') == 'olleh'
+assert reversing('') == ''
 
 
 # version 2
@@ -21,6 +22,7 @@ def reversing_v2(string: str) -> str:
 
 
 assert reversing_v2('hello') == 'olleh'
+assert reversing_v2('') == ''
 
 
 # version 3
@@ -29,3 +31,4 @@ def reversing_v3(string: str) -> str:
 
 
 assert reversing_v3('hello') == 'olleh'
+assert reversing_v3('') == ''

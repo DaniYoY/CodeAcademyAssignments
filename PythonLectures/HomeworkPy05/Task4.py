@@ -9,5 +9,11 @@ def is_anagram(str1: str, str2: str) -> bool:
     return str1 == str2
 
 
+# if true, non-empty strings
 assert is_anagram("listen", "silent") is True
+# if false, non-empty strings
 assert is_anagram("listen", "sile") is False
+# if false, empty strings
+assert is_anagram("listen", "") is False
+# if true, empty strings
+assert is_anagram("", "") is True
