@@ -20,9 +20,9 @@ class TemperatureConverter:
         if temp_char != 'c' and temp_char != 'f':
             print('choose between C or F to select what temp you are entering')
         if temp_char.lower() == 'c':
-            TemperatureConverter.__celsius_to_fahrenheit(temp)
+            cls.__celsius_to_fahrenheit(temp)
         if temp_char.lower() == 'f':
-            TemperatureConverter.__fahrenheit_to_celsius(temp)
+            cls.__fahrenheit_to_celsius(temp)
 
 
 TemperatureConverter.convert_temp(32)

@@ -1,5 +1,5 @@
 # 12.Generator for Multiplication Table
-# Write a generator function that yields the multiplication table for a given number up to n.
+# Write a generator function that yields the multiplication expense_table for a given number up to n.
 # Input: 3, 5
 # Output: 3, 6, 9, 12, 15
 
